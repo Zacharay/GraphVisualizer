@@ -3,14 +3,18 @@
 #include <memory>
 
 
-
-
-
-
-
-Application::Application() : Window(){
+Application::Application() : Window(),m_graph(8){
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
+    m_graph.addEdge(1,2,0,true);
+    m_graph.addEdge(2,3,0,true);
+    m_graph.addEdge(2,4,0,true);
+    m_graph.addEdge(3,4,0,true);
+    m_graph.addEdge(3,7,0,true);
+    m_graph.addEdge(7,6,0,true);
+    m_graph.addEdge(6,5,0,true);
+
+    m_graph.printGraph();
 }
 void Application::processInput(float deltaTime) {
     if(glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
