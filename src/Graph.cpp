@@ -22,3 +22,6 @@ void Graph::printGraph()const{
         std::cout<<std::endl;
     }
 }
+unsigned int Graph::getSize()const {
+    return adjList.size();
+}

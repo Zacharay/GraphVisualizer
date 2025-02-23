@@ -47,7 +47,7 @@ void Window::calculateFps() {
 
     if (elapsedTime >= 1.0) { // If a second has passed
         double fps = static_cast<double>(frameCount) / elapsedTime;
-        std::cout << "FPS: " << fps << std::endl;
+        //std::cout << "FPS: " << fps << std::endl;
 
         // Reset for the next calculation
         previousTime = currentTime;

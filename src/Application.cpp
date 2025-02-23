@@ -15,6 +15,10 @@ Application::Application() : Window(),m_graph(8){
     m_graph.addEdge(6,5,0,true);
 
     m_graph.printGraph();
+
+    m_graphRenderer = std::make_unique<GraphRenderer>(m_graph,m_renderer);
+    m_graphRenderer->randomShuffleNodes();
+
 }
 void Application::processInput(float deltaTime) {
     if(glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -24,10 +28,7 @@ void Application::processInput(float deltaTime) {
 
 
 void Application::onRender() {
-    m_renderer.drawNode(200,200);
-    m_renderer.drawNode(400,500);
-
-    m_renderer.drawLine({200.0f,200.0f,0.0f},{400.0f,500.0f,0.0f});
+    m_graphRenderer->render();
 }
 void Application::onUpdate() {
     float currentFrame = glfwGetTime();

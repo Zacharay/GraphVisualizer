@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-
+#include "glm/glm.hpp"
 struct Edge{
     int weight;
     int destination;
@@ -22,10 +22,10 @@ struct Edge{
 
 
 class Graph{
-private:
-    std::vector<std::vector<Edge>>adjList;
 public:
+    std::vector<std::vector<Edge>>adjList;
     Graph(int graphSize);
     void addEdge(int from,int to,int weight=0,bool isBidirectional=false);
+    unsigned int getSize()const;
     void printGraph()const;
 };
