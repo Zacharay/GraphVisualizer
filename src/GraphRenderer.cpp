@@ -23,6 +23,23 @@ void GraphRenderer::randomShuffleNodes() {
         node.color=color;
     }
 }
+void GraphRenderer::nodesAtCircle(float circleRadius) {
+    unsigned int numNodes = m_nodes.size();
+
+    float theta = 0.0f;
+    float thetaStep = 2.0f*M_PI/numNodes;
+
+    for(Node &node:m_nodes) {
+        float x = circleRadius*cosf(theta);
+        float y = circleRadius*sinf(theta);
+
+        node.posX = x + WINDOW_WIDTH/2;
+        node.posY = y + WINDOW_HEIGHT/2;
+        node.color = glm::vec3(0.0f,0.5f,0.0f);
+        theta += thetaStep;
+    }
+}
+
 void GraphRenderer::render()  {
     for(const Node &node:m_nodes) {
         m_renderer.drawNode(node.posX,node.posY);

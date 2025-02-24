@@ -19,5 +19,6 @@ public:
         m_nodes.resize(g.getSize());
     };
     void randomShuffleNodes();
+    void nodesAtCircle(float circleRadius);
     void render();
 };

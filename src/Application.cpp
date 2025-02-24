@@ -17,8 +17,8 @@ Application::Application() : Window(),m_graph(8){
     m_graph.printGraph();
 
     m_graphRenderer = std::make_unique<GraphRenderer>(m_graph,m_renderer);
-    m_graphRenderer->randomShuffleNodes();
-
+    // m_graphRenderer->randomShuffleNodes();
+    m_graphRenderer->nodesAtCircle(400.0f);
 }
 void Application::processInput(float deltaTime) {
     if(glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
