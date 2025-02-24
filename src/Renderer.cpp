@@ -2,18 +2,20 @@
 
 #include <iostream>
 
+#include "Config.hpp"
 #include  "Window.hpp"
 
 
 
 
 Renderer::Renderer():m_shader("vertexShader.vert","fragmentShader.frag") {
-
-    m_projMatrix = glm::ortho(0.0f, static_cast<float>(WINDOW_WIDTH), static_cast<float>(WINDOW_HEIGHT),0.0f);
+    const unsigned int windowWidth = Config::getInstance().getWindowWidth();
+    const unsigned int windowHeight = Config::getInstance().getWindowHeight();
+    m_projMatrix = glm::ortho(0.0f, static_cast<float>(windowWidth), static_cast<float>(windowHeight),0.0f);
 }
 void Renderer::getNodeVertices(int x,int y,std::vector<Vertex>&vertices,std::vector<unsigned int>&indices) {
 
-    const int radius = 50.0f;
+    const float radius = Config::getInstance().getNodeRadius();
     int numberOfTriangles = 36;
     float theta = 0.0f;
     float thetaStep = 360.0f /  (float)numberOfTriangles;
@@ -75,7 +77,6 @@ void Renderer::drawNode(int x, int y)  {
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
-    //glDrawArrays(GL_TRIANGLES, 0, vertices.size());
 
     glBindVertexArray(0);
     glDeleteBuffers(1, &IBO);

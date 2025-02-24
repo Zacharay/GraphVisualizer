@@ -2,9 +2,6 @@
 #include "glad/glad.h"
 #include <GLFW/glfw3.h>
 
-constexpr int WINDOW_WIDTH = 1200;
-constexpr int WINDOW_HEIGHT = 1000;
-
 class Window  {
 private:
     void calculateFps();

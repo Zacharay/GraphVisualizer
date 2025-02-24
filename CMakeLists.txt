@@ -28,6 +28,7 @@ add_executable(GraphVisualizer ${SOURCES}
         include/Application.hpp
         src/Shader.cpp
         include/GraphRenderer.hpp
+        include/Config.hpp
 )
 
 # Include directories
