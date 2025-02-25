@@ -3,18 +3,12 @@
 #include <memory>
 
 
-Application::Application() : Window(),m_graph(8){
+Application::Application() : Window(),m_graph(0){
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
-    m_graph.addEdge(1,2,0,true);
-    m_graph.addEdge(2,3,0,true);
-    m_graph.addEdge(2,4,0,true);
-    m_graph.addEdge(3,4,0,true);
-    m_graph.addEdge(3,7,0,true);
-    m_graph.addEdge(7,6,0,true);
-    m_graph.addEdge(6,5,0,true);
 
-    m_graph.printGraph();
+
+    m_graphParser.loadGraph(m_graph);
 
     m_graphRenderer = std::make_unique<GraphRenderer>(m_graph,m_renderer);
     // m_graphRenderer->randomShuffleNodes();
@@ -23,6 +17,9 @@ Application::Application() : Window(),m_graph(8){
 void Application::processInput(float deltaTime) {
     if(glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(m_window,true);
+    }
+    else if(glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+        m_graphRenderer->startDfs(0);
     }
 }
 
@@ -34,5 +31,8 @@ void Application::onUpdate() {
     float currentFrame = glfwGetTime();
     float deltaTime = currentFrame ;
 
+
     processInput(deltaTime);
+
+    m_graphRenderer->updateDfs();
 }

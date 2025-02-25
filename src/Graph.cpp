@@ -11,6 +11,10 @@ void Graph::addEdge(int from,int to,int weight,bool isBidirectional){
     }
 
 }
+void Graph::resize(int numberOfNodes) {
+    adjList.resize(numberOfNodes);
+    adjList.reserve(numberOfNodes);
+}
 void Graph::printGraph()const{
 
     for(int i=1;i<adjList.size();i++){

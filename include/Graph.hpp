@@ -26,6 +26,7 @@ public:
     std::vector<std::vector<Edge>>adjList;
     Graph(int graphSize);
     void addEdge(int from,int to,int weight=0,bool isBidirectional=false);
+    void resize(int numberOfNodes);
     unsigned int getSize()const;
     void printGraph()const;
 };

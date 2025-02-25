@@ -39,7 +39,7 @@ void Renderer::getNodeVertices(int x,int y,std::vector<Vertex>&vertices,std::vec
     }
 
 }
-void Renderer::drawNode(int x, int y)  {
+void Renderer::drawNode(int x, int y,glm::vec3 color)  {
     std::vector<Vertex> vertices;
     std::vector<unsigned int> indices;
     getNodeVertices(x,y,vertices,indices);
@@ -73,7 +73,7 @@ void Renderer::drawNode(int x, int y)  {
     m_shader.setMat4(m_projMatrix, "projection");
     m_shader.setMat4(glm::mat4(1.0f), "view");
     m_shader.setMat4(glm::mat4(1.0f), "model");
-
+    m_shader.setVec3(color,"color");
 
     glBindVertexArray(VAO);
     glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
@@ -83,7 +83,7 @@ void Renderer::drawNode(int x, int y)  {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
 }
-void Renderer::drawLine(glm::vec3 start,glm::vec3 end) {
+void Renderer::drawLine(glm::vec3 start,glm::vec3 end,glm::vec3 color) {
     std::vector<Vertex>vertices={
         {
             start
@@ -114,7 +114,7 @@ void Renderer::drawLine(glm::vec3 start,glm::vec3 end) {
     m_shader.setMat4(m_projMatrix, "projection");
     m_shader.setMat4(glm::mat4(1.0f), "view");  // Identity view matrix
     m_shader.setMat4(glm::mat4(1.0f), "model"); // No transformation
-
+    m_shader.setVec3(color,"color");
     // Draw line
     glLineWidth(4.0f);  // Set line width
     glDrawArrays(GL_LINES, 0, 2);

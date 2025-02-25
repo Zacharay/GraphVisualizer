@@ -1,6 +1,7 @@
 #pragma once
 #include "json.hpp"
 #include <fstream>
+#include <iostream>
 
 using json = nlohmann::json;
 
@@ -22,6 +23,7 @@ public:
     unsigned int getWindowWidth()const{return m_configData["window"]["width"];}
     unsigned int getWindowHeight()const{return m_configData["window"]["height"];}
     bool isShowingFps()const{return m_configData["logging"]["showFps"];}
+    std::string getInputFileName(){return m_configData["parser"]["inputFileName"];};
 private:
     float m_nodeRadius;
     json m_configData;
