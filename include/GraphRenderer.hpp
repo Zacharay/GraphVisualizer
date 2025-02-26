@@ -21,6 +21,7 @@ private:
 public:
     GraphRenderer(Graph& g,Renderer &r):m_graph(g),m_renderer(r) {
         m_nodes.resize(g.getSize());
+        m_visited.resize(g.getSize());
     };
     void randomShuffleNodes();
     void nodesAtCircle(float circleRadius);

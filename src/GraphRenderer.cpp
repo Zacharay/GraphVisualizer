@@ -75,7 +75,8 @@ void GraphRenderer::startDfs(int startingNode) {
 
     m_dfsIsRunning = true;
     m_dfsStack.push_back(startingNode);
-    m_nodes[startingNode].visited = true;
+    m_visited[startingNode] = true;
+
 }
 void GraphRenderer::updateDfs() {
     static double lastUpdateTime = glfwGetTime(); // Track last update time
@@ -88,15 +89,15 @@ void GraphRenderer::updateDfs() {
     lastUpdateTime = currentTime; // Reset timer
 
     int parentNodeIndex = m_dfsStack.back();
-    std::cout << parentNodeIndex << std::endl;
+    std::cout<<parentNodeIndex<<std::endl;
     m_nodes[parentNodeIndex].visited = true;
     m_dfsStack.pop_back();
 
     for(Edge &edge:m_graph.adjList[parentNodeIndex]) {
 
-            if(!m_nodes[edge.destination].visited) {
+            if(! m_visited[edge.destination]) {
                 m_dfsStack.push_back(edge.destination);
-
+                m_visited[edge.destination] = true;
             }
     }
 
