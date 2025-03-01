@@ -13,5 +13,9 @@
   },
   "visualization": {
     "nodeRadius": 10.0
+  },
+  "parser":
+  {
+    "inputFileName": "input.txt"
   }
 }

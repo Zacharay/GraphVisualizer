@@ -1,31 +1,15 @@
 #pragma once
+#include <memory>
 #include <Renderer.hpp>
-
+#include "GraphLayout.hpp"
 #include "Graph.hpp"
 
-struct Node {
-    unsigned int posX;
-    unsigned int posY;
-    glm::vec3 color;
-    bool visited;
-};
+
 class GraphRenderer {
 private:
-    Graph m_graph;
+    std::shared_ptr<GraphLayout> m_layout;
     Renderer m_renderer;
-    std::vector<Node>m_nodes;
-
-    std::vector<int>m_dfsStack;
-    std::vector<bool>m_visited;
-    bool m_dfsIsRunning = false;
 public:
-    GraphRenderer(Graph& g,Renderer &r):m_graph(g),m_renderer(r) {
-        m_nodes.resize(g.getSize());
-        m_visited.resize(g.getSize());
-    };
-    void randomShuffleNodes();
-    void nodesAtCircle(float circleRadius);
+    GraphRenderer(std::shared_ptr<GraphLayout> g,Renderer &r):m_layout(g),m_renderer(r) {};
     void render();
-    void startDfs(int startingNode);
-    void updateDfs();
 };

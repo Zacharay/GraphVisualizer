@@ -10,16 +10,20 @@ Application::Application() : Window(),m_graph(0){
 
     m_graphParser.loadGraph(m_graph);
 
-    m_graphRenderer = std::make_unique<GraphRenderer>(m_graph,m_renderer);
-    // m_graphRenderer->randomShuffleNodes();
-    m_graphRenderer->nodesAtCircle(400.0f);
+    m_graphLayout= std::make_shared<GraphLayout>(m_graph.getSize(),m_graph);
+    m_graphLayout->nodesAtCircle(400.0f);
+
+    m_graphController.setAlgorithm(std::make_unique<DFSAlgorithm>(m_graph,m_graphLayout));
+    m_graphRenderer = std::make_unique<GraphRenderer>(m_graphLayout,m_renderer);
+
+
 }
 void Application::processInput(float deltaTime) {
     if(glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(m_window,true);
     }
     else if(glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        m_graphRenderer->startDfs(0);
+        m_graphController.start(0);
     }
 }
 
@@ -34,5 +38,5 @@ void Application::onUpdate() {
 
     processInput(deltaTime);
 
-    m_graphRenderer->updateDfs();
+    m_graphController.update();
 }
