@@ -4,10 +4,10 @@ Graph::Graph(int graphSize){
     adjList.resize(graphSize);
     adjList.reserve(graphSize);
 }
-void Graph::addEdge(int from,int to,int weight,bool isBidirectional){
-    adjList[from].emplace_back(to,weight,isBidirectional);
+void Graph::addEdge(int from,int to,int weight,bool isBidirectional,glm::vec3 color){
+    adjList[from].emplace_back(to,weight,isBidirectional,color);
     if(isBidirectional){
-       adjList[to].emplace_back(from,weight,isBidirectional);
+       adjList[to].emplace_back(from,weight,isBidirectional,color);
     }
 
 }

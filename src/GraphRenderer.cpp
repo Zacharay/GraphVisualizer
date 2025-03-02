@@ -8,7 +8,6 @@
 #include "Window.hpp"
 
 
-
 void GraphRenderer::render()  {
     for(const Node &node:m_layout->getNodes()) {
         m_renderer.drawNode(node.posX,node.posY,node.color);
@@ -19,7 +18,7 @@ void GraphRenderer::render()  {
             const Node &nodeFrom = m_layout->getNodes()[from];
             const Node &nodeTo = m_layout->getNodes()[edge.destination];
 
-            m_renderer.drawLine(glm::vec3(nodeFrom.posX,nodeFrom.posY,1.0f),glm::vec3(nodeTo.posX,nodeTo.posY,1.0f),glm::vec3(0.0f,0.0f,1.0f));
+            m_renderer.drawLine(glm::vec3(nodeFrom.posX,nodeFrom.posY,1.0f),glm::vec3(nodeTo.posX,nodeTo.posY,1.0f),edge.color);
         }
     }
 }
