@@ -5,9 +5,17 @@ Graph::Graph(int graphSize){
     adjList.reserve(graphSize);
 }
 void Graph::addEdge(int from,int to,int weight,bool isBidirectional,glm::vec3 color){
-    adjList[from].emplace_back(to,weight,isBidirectional,color);
-    if(isBidirectional){
-       adjList[to].emplace_back(from,weight,isBidirectional,color);
+
+    std::shared_ptr<Edge> edge = std::make_shared<Edge>(to, weight, isBidirectional, color);
+    adjList[from].push_back(edge);
+
+    if (isBidirectional) {
+        std::shared_ptr<Edge> twinEdge = std::make_shared<Edge>(from, weight, isBidirectional, color);
+        adjList[to].push_back(twinEdge);
+
+        // Assign twin pointers after both edges exist
+        edge->twin = twinEdge;
+        twinEdge->twin = edge;
     }
 
 }
@@ -20,7 +28,7 @@ void Graph::printGraph()const{
     for(int i=1;i<adjList.size();i++){
         std::cout<<i<<"  ";
         for(int j=0;j<adjList[i].size();j++){
-            std::cout<<adjList[i][j].destination<<"("<<adjList[i][j].weight<<")"<<" ";
+            std::cout<<adjList[i][j]->destination<<"("<<adjList[i][j]->weight<<")"<<" ";
 
         }
         std::cout<<std::endl;

@@ -1,9 +1,4 @@
 #include "DFSAlgorithm.hpp"
-
-#include <iostream>
-#include <ostream>
-
-
 #include "GLFW/glfw3.h"
 
 void DFSAlgorithm::start(int startingNode) {
@@ -11,10 +6,8 @@ void DFSAlgorithm::start(int startingNode) {
 
     m_isRunning = true;
 
-    // Get reference to first edge of the starting node (assuming it's not empty)
-    if (!m_graph.adjList[startingNode].empty()) {
-        Edge& edge = m_graph.adjList[startingNode][0]; // Get reference
-        m_dfsStack.emplace(&edge); // Store reference
+    for (auto edge : m_graph.adjList[startingNode]) {
+        m_dfsStack.push(edge);
     }
 }
 void DFSAlgorithm::update() {
@@ -23,28 +16,33 @@ void DFSAlgorithm::update() {
 
     if(!m_isRunning || m_dfsStack.empty())return;
 
-    Edge *currentEdge = m_dfsStack.top();
-    currentEdge->color = glm::vec3(0,1.0f,0);
+    std::shared_ptr<Edge> edge = m_dfsStack.top();
+    int parentNodeIndex = edge->destination;
+
 
     //if node was already visited ignore it with timing mechanism
-    if (m_visited[currentEdge->destination] == true) {
+    if (m_visited[parentNodeIndex] == true) {
         lastUpdateTime = glfwGetTime();
         m_dfsStack.pop();
         return;
     }
 
-    int parentNodeIndex = currentEdge->destination;
     // Only update DFS if 100ms have passed since last update
     if (currentTime - lastUpdateTime < 1.0 ) return;
-    lastUpdateTime = currentTime; // Reset timer
+        lastUpdateTime = currentTime; // Reset timer
 
     m_layout->setNodeColor(parentNodeIndex,glm::vec3(1.0f,0,0));
+
+    edge->color = glm::vec3(0,0.5f,0.0);
+    if(edge->isBidirectional) {
+        edge->twin->color = glm::vec3(0.0f,0.5f,0.0f);
+    }
     m_visited[parentNodeIndex] = true;
     m_dfsStack.pop();
 
-    for(Edge &edge:m_graph.adjList[parentNodeIndex]) {
-        if(! m_visited[edge.destination]) {
-            m_dfsStack.push(&edge);
+    for(auto edge : m_graph.adjList[parentNodeIndex]) {
+        if(! m_visited[edge->destination]) {
+            m_dfsStack.push(edge);
         }
     }
 

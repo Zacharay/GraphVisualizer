@@ -1,4 +1,5 @@
 #pragma once
+#include <memory>
 #include <vector>
 #include "glm/glm.hpp"
 struct Edge{
@@ -6,6 +7,7 @@ struct Edge{
     int destination;
     bool isBidirectional;
     glm::vec3 color;
+    std::shared_ptr<Edge>twin;//same edge in opposite direction
     Edge()
     {
         weight = 0;
@@ -26,7 +28,7 @@ struct Edge{
 
 class Graph{
 public:
-    std::vector<std::vector<Edge>>adjList;
+    std::vector<std::vector<std::shared_ptr<Edge>>>adjList;
     Graph(int graphSize);
     void addEdge(int from,int to,int weight=0,bool isBidirectional=false,glm::vec3 color=glm::vec3(1.0f, 1.0f, 1.0f));
     void resize(int numberOfNodes);
