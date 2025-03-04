@@ -6,6 +6,9 @@ void DFSAlgorithm::start(int startingNode) {
 
     m_isRunning = true;
 
+    m_visited[startingNode] = true;
+    m_layout->setNodeColor(startingNode,glm::vec3(1.0f,0,0));
+
     for (auto edge : m_graph.adjList[startingNode]) {
         m_dfsStack.push(edge);
     }
@@ -18,6 +21,11 @@ void DFSAlgorithm::update() {
 
     std::shared_ptr<Edge> edge = m_dfsStack.top();
     int parentNodeIndex = edge->destination;
+    if (edge->activationTime == -1) {
+        edge->activationTime = glfwGetTime();
+        std::cout << "Activating edge from " << " to " << edge->destination
+                  << " at time: " << edge->activationTime << std::endl;
+    }
 
 
     //if node was already visited ignore it with timing mechanism
@@ -28,7 +36,7 @@ void DFSAlgorithm::update() {
     }
 
     // Only update DFS if 100ms have passed since last update
-    if (currentTime - lastUpdateTime < 1.0 ) return;
+    if (currentTime - lastUpdateTime < 5.0 ) return;
         lastUpdateTime = currentTime; // Reset timer
 
     m_layout->setNodeColor(parentNodeIndex,glm::vec3(1.0f,0,0));
@@ -43,6 +51,7 @@ void DFSAlgorithm::update() {
     for(auto edge : m_graph.adjList[parentNodeIndex]) {
         if(! m_visited[edge->destination]) {
             m_dfsStack.push(edge);
+
         }
     }
 

@@ -2,11 +2,9 @@
 #include "Shader.hpp"
 #include <memory>
 
-
+float startTime = glfwGetTime();
 Application::Application() : Window(),m_graph(0){
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-
-
 
     m_graphParser.loadGraph(m_graph);
 
@@ -15,6 +13,7 @@ Application::Application() : Window(),m_graph(0){
 
     m_graphController.setAlgorithm(std::make_unique<DFSAlgorithm>(m_graph,m_graphLayout));
     m_graphRenderer = std::make_unique<GraphRenderer>(m_graphLayout,m_renderer);
+
 
 
 }
@@ -34,7 +33,6 @@ void Application::onRender() {
 void Application::onUpdate() {
     float currentFrame = glfwGetTime();
     float deltaTime = currentFrame ;
-
 
     processInput(deltaTime);
 

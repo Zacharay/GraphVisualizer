@@ -8,12 +8,14 @@ struct Edge{
     bool isBidirectional;
     glm::vec3 color;
     std::shared_ptr<Edge>twin;//same edge in opposite direction
+    float activationTime;
     Edge()
     {
         weight = 0;
         destination = -1;
         isBidirectional = false;
         color = glm::vec3(1.0f, 1.0f, 1.0f);
+        activationTime = -1;
     };
     Edge( int destination, int weight,bool isBidirectional,glm::vec3 color)
     {
@@ -21,6 +23,7 @@ struct Edge{
         this->destination = destination;
         this->isBidirectional = isBidirectional;
         this->color = color;
+        activationTime = -1;
     }
 };
 

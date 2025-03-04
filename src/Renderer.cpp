@@ -125,3 +125,50 @@ void Renderer::drawLine(glm::vec3 start,glm::vec3 end,glm::vec3 color) {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
 }
+void Renderer::drawAnimatedEdge(glm::vec3 start, glm::vec3 end,glm::vec3 color,float progress) {
+    std::vector<Vertex>vertices={
+        {
+            start
+            ,{1.0f,1.0,1.0f}
+        },
+        {end,{1.0f,1.0,1.0f}}};
+
+    // OpenGL Buffer Setup
+    unsigned int VAO, VBO;
+    glGenVertexArrays(1, &VAO);
+    glGenBuffers(1, &VBO);
+
+    glBindVertexArray(VAO);
+
+    // Upload vertex data
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_DYNAMIC_DRAW);
+
+    // Set vertex attributes
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+
+    // Use Shader
+    Shader animatedShader("animatedEdge.vert", "animatedEdge.frag");
+
+    animatedShader.useProgram();
+    animatedShader.setMat4(m_projMatrix, "projection");
+    animatedShader.setMat4(glm::mat4(1.0f), "view");  // Identity view matrix
+    animatedShader.setMat4(glm::mat4(1.0f), "model"); // No transformation
+    animatedShader.setVec3(color,"edgeColor");
+    animatedShader.setVec3(start,"edgeStart");
+    animatedShader.setVec3(end,"edgeEnd");
+    animatedShader.setFloat(progress,"progress");
+    // Draw line
+    glLineWidth(4.0f);  // Set line width
+    glDrawArrays(GL_LINES, 0, 2);
+
+    glBindVertexArray(0);
+
+    glBindVertexArray(0);
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
+}
