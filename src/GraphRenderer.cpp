@@ -1,11 +1,5 @@
 #include "GraphRenderer.hpp"
-
-#include <iostream>
-#include <ostream>
-#include <random>
-
 #include "Config.hpp"
-#include "Window.hpp"
 
 bool x = false;
 
@@ -21,7 +15,6 @@ void GraphRenderer::render()  {
             const Node &nodeTo = m_layout->getNodes()[edge->destination];
 
             float progress = 0.0f;
-
             // Check if activationTime is valid
             if (edge->isActivated()) {
                 // Calculate time since activation in seconds
@@ -34,7 +27,6 @@ void GraphRenderer::render()  {
             m_renderer.drawAnimatedEdge(
                                glm::vec3(nodeFrom.posX,nodeFrom.posY,1.0f),
                                glm::vec3(nodeTo.posX,nodeTo.posY,1.0f),
-                               edge->color,
                                progress);
 
         }

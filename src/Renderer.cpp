@@ -84,12 +84,10 @@ void Renderer::drawNode(int x, int y,glm::vec3 color)  {
     glDeleteBuffers(1, &VBO);
 }
 void Renderer::drawLine(glm::vec3 start,glm::vec3 end,glm::vec3 color) {
-    std::vector<Vertex>vertices={
-        {
-            start
-            ,{1.0f,1.0,1.0f}
-        },
-        {end,{1.0f,1.0,1.0f}}};
+    std::vector<float>vertexPositions={
+        start.x,start.y,start.z,
+        end.x,end.y,end.z,
+    };
 
     // OpenGL Buffer Setup
     unsigned int VAO, VBO;
@@ -100,14 +98,11 @@ void Renderer::drawLine(glm::vec3 start,glm::vec3 end,glm::vec3 color) {
 
     // Upload vertex data
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertexPositions.size() * sizeof(float), vertexPositions.data(), GL_DYNAMIC_DRAW);
 
     // Set vertex attributes
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
-
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float)*3, (void*)0);
 
     // Use Shader
     m_shader.useProgram();
@@ -125,13 +120,11 @@ void Renderer::drawLine(glm::vec3 start,glm::vec3 end,glm::vec3 color) {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
 }
-void Renderer::drawAnimatedEdge(glm::vec3 start, glm::vec3 end,glm::vec3 color,float progress) {
-    std::vector<Vertex>vertices={
-        {
-            start
-            ,{1.0f,1.0,1.0f}
-        },
-        {end,{1.0f,1.0,1.0f}}};
+void Renderer::drawAnimatedEdge(glm::vec3 start, glm::vec3 end,float progress) {
+    std::vector<float>vertexPositions={
+        start.x,start.y,start.z,
+        end.x,end.y,end.z,
+    };
 
     // OpenGL Buffer Setup
     unsigned int VAO, VBO;
@@ -142,14 +135,12 @@ void Renderer::drawAnimatedEdge(glm::vec3 start, glm::vec3 end,glm::vec3 color,f
 
     // Upload vertex data
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(Vertex), vertices.data(), GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertexPositions.size() * sizeof(float), vertexPositions.data(), GL_DYNAMIC_DRAW);
 
     // Set vertex attributes
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, pos));
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float)*3, (void*)0);
 
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
 
     m_animatedShader.useProgram();
     m_animatedShader.setMat4(m_projMatrix, "projection");

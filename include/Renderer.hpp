@@ -16,6 +16,6 @@ public:
       Renderer();
       void drawLine(glm::vec3 start, glm::vec3 end,glm::vec3 color);
       void drawNode(int x,int y,glm::vec3 color);
-      void drawAnimatedEdge(glm::vec3 start, glm::vec3 end,glm::vec3 color,float progress);
+      void drawAnimatedEdge(glm::vec3 start, glm::vec3 end,float progress);
       void getNodeVertices(int x,int y,std::vector<Vertex>&vertices,std::vector<unsigned int>&indices);
 };

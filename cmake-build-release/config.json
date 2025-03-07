@@ -1,0 +1,20 @@
+{
+  "window": {
+    "width": 1200,
+    "height": 1000,
+    "fullscreen": false
+  },
+  "graphics": {
+    "antialiasing": 4,
+    "vsync": true
+  },
+  "logging": {
+    "showFps": true
+  },
+  "visualization": {
+    "nodeRadius": 20.0
+  },
+  "parser": {
+    "inputFileName": "input.txt"
+  }
+}

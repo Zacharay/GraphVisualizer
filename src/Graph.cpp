@@ -4,15 +4,14 @@ Graph::Graph(int graphSize){
     adjList.resize(graphSize);
     adjList.reserve(graphSize);
 }
-void Graph::addEdge(int from,int to,int weight,bool isBidirectional,glm::vec3 color){
+void Graph::addEdge(int from,int to,int weight,bool isBidirectional){
 
-    std::shared_ptr<Edge> edge = std::make_shared<Edge>(to, weight, isBidirectional, color);
+    std::shared_ptr<Edge> edge = std::make_shared<Edge>(to, weight, isBidirectional);
     adjList[from].push_back(edge);
 
     if (isBidirectional) {
-        std::shared_ptr<Edge> twinEdge = std::make_shared<Edge>(from, weight, isBidirectional, color);
+        std::shared_ptr<Edge> twinEdge = std::make_shared<Edge>(from, weight, isBidirectional);
         adjList[to].push_back(twinEdge);
-
         // Assign twin pointers after both edges exist
         edge->twin = twinEdge;
         twinEdge->twin = edge;
