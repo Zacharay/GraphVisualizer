@@ -20,16 +20,16 @@ void GraphRenderer::render()  {
             const Node &nodeFrom = m_layout->getNodes()[from];
             const Node &nodeTo = m_layout->getNodes()[edge->destination];
 
-            float progress =0.0f;
-            if(edge->activationTime != -1) {
+            float progress = 0.0f;
 
-                float timeSinceActivated = glfwGetTime()- edge->activationTime;
-                //if(timeSinceActivated<1.0f)
-                //std::cout << "Edge to "<<edge->destination<<" time since activated "<<timeSinceActivated<<" activation time "<<edge->activationTime<<std::endl;
-                progress = fminf(timeSinceActivated/5.0f,1.0f);
+            // Check if activationTime is valid
+            if (edge->isActivated()) {
+                // Calculate time since activation in seconds
+                auto now = std::chrono::high_resolution_clock::now();
+                auto timeSinceActivated = std::chrono::duration<float>(now - edge->activation_time).count();
 
-
-
+                // Calculate progress (capped at 1.0f)
+                progress = timeSinceActivated>1.0f?1.0f:timeSinceActivated;
             }
             m_renderer.drawAnimatedEdge(
                                glm::vec3(nodeFrom.posX,nodeFrom.posY,1.0f),

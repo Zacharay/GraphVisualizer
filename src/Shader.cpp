@@ -94,4 +94,9 @@ void Shader::setFloat(float data, const char* uniformName) {
     int uniformLocation = glGetUniformLocation(this->ID, uniformName);
     glUniform1f(uniformLocation, data);
 }
+void Shader::setDouble(double data, const char *uniformName) {
+    int uniformLocation = glGetUniformLocation(this->ID, uniformName);
+    glUniform1d(uniformLocation, data);
+}
+
 

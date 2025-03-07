@@ -10,6 +10,7 @@ struct Vertex {
 class Renderer{
 private:
       Shader m_shader;
+      Shader m_animatedShader;
       glm::mat4 m_projMatrix;
 public:
       Renderer();

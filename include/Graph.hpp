@@ -2,28 +2,30 @@
 #include <memory>
 #include <vector>
 #include "glm/glm.hpp"
-struct Edge{
+#include <chrono>
+struct Edge {
     int weight;
     int destination;
     bool isBidirectional;
     glm::vec3 color;
-    std::shared_ptr<Edge>twin;//same edge in opposite direction
-    float activationTime;
+    std::shared_ptr<Edge> twin; // same edge in opposite direction
+    std::chrono::time_point<std::chrono::high_resolution_clock> activation_time;
+
+    // Default constructor
     Edge()
-    {
-        weight = 0;
-        destination = -1;
-        isBidirectional = false;
-        color = glm::vec3(1.0f, 1.0f, 1.0f);
-        activationTime = -1;
-    };
-    Edge( int destination, int weight,bool isBidirectional,glm::vec3 color)
-    {
-        this->weight = weight;
-        this->destination = destination;
-        this->isBidirectional = isBidirectional;
-        this->color = color;
-        activationTime = -1;
+        : weight(0), destination(-1), isBidirectional(false), color(glm::vec3(1.0f, 1.0f, 1.0f)),
+          activation_time(std::chrono::high_resolution_clock::time_point(std::chrono::high_resolution_clock::duration(-1)))
+    {}
+
+    // Parameterized constructor
+    Edge(int destination, int weight, bool isBidirectional, glm::vec3 color)
+        : weight(weight), destination(destination), isBidirectional(isBidirectional), color(color),
+          activation_time(std::chrono::high_resolution_clock::time_point(std::chrono::high_resolution_clock::duration(-1)))
+    {}
+
+    bool isActivated() const {
+        auto invalid_duration = std::chrono::high_resolution_clock::duration(-1);
+        return activation_time.time_since_epoch() != invalid_duration;
     }
 };
 

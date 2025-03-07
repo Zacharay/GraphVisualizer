@@ -8,7 +8,7 @@
 
 
 
-Renderer::Renderer():m_shader("vertexShader.vert","fragmentShader.frag") {
+Renderer::Renderer():m_shader("vertexShader.vert","fragmentShader.frag"),m_animatedShader("animatedEdge.vert", "animatedEdge.frag") {
     const unsigned int windowWidth = Config::getInstance().getWindowWidth();
     const unsigned int windowHeight = Config::getInstance().getWindowHeight();
     m_projMatrix = glm::ortho(0.0f, static_cast<float>(windowWidth), static_cast<float>(windowHeight),0.0f);
@@ -151,22 +151,16 @@ void Renderer::drawAnimatedEdge(glm::vec3 start, glm::vec3 end,glm::vec3 color,f
     glEnableVertexAttribArray(1);
     glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, color));
 
-    // Use Shader
-    Shader animatedShader("animatedEdge.vert", "animatedEdge.frag");
-
-    animatedShader.useProgram();
-    animatedShader.setMat4(m_projMatrix, "projection");
-    animatedShader.setMat4(glm::mat4(1.0f), "view");  // Identity view matrix
-    animatedShader.setMat4(glm::mat4(1.0f), "model"); // No transformation
-    animatedShader.setVec3(color,"edgeColor");
-    animatedShader.setVec3(start,"edgeStart");
-    animatedShader.setVec3(end,"edgeEnd");
-    animatedShader.setFloat(progress,"progress");
+    m_animatedShader.useProgram();
+    m_animatedShader.setMat4(m_projMatrix, "projection");
+    m_animatedShader.setMat4(glm::mat4(1.0f), "view");  // Identity view matrix
+    m_animatedShader.setMat4(glm::mat4(1.0f), "model"); // No transformation
+    m_animatedShader.setVec3(start,"edgeStart");
+    m_animatedShader.setVec3(end,"edgeEnd");
+    m_animatedShader.setFloat(progress,"progress");
     // Draw line
     glLineWidth(4.0f);  // Set line width
     glDrawArrays(GL_LINES, 0, 2);
-
-    glBindVertexArray(0);
 
     glBindVertexArray(0);
     glDeleteVertexArrays(1, &VAO);
