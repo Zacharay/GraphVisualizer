@@ -14,7 +14,13 @@ protected:
     GLFWwindow *m_window;
     ~Window();
 
-
+    static void MouseButtonCallback(GLFWwindow* window, int button, int action, int mods) {
+        Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+        if (win) {
+            win->onMouseButton(button, action, mods);
+        }
+    };
+    virtual void onMouseButton(int button,int action,int mods)=0;
     virtual void onUpdate()=0;
     virtual void onRender()=0;
 

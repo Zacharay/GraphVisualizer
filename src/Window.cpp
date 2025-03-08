@@ -25,6 +25,11 @@ Window::Window()
 
     glfwMakeContextCurrent(m_window);
 
+    // Store pointer to this instance in user data
+    glfwSetWindowUserPointer(m_window, this);
+
+    // Set the mouse button callback
+    glfwSetMouseButtonCallback(m_window, MouseButtonCallback);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to initialize GLAD" << std::endl;

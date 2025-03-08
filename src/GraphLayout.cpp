@@ -49,5 +49,7 @@ void GraphLayout::nodesAtCircle(float circleRadius) {
 }
 void GraphLayout::setNodeColor(int nodeIndex,const glm::vec3 &newColor) {
     m_nodes[nodeIndex].color = newColor;
-
+}
+void GraphLayout::addNewNode(float posX,float posY) {
+    m_nodes.emplace_back(posX,posY,glm::vec3(0,1,0));
 }

@@ -22,7 +22,7 @@ void Application::processInput(float deltaTime) {
         glfwSetWindowShouldClose(m_window,true);
     }
     else if(glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        m_graphController.start(0);
+        m_graphController.start(1);
     }
 }
 
@@ -37,4 +37,15 @@ void Application::onUpdate() {
     processInput(deltaTime);
 
     m_graphController.update();
+}
+void Application::onMouseButton(int button, int action, int mods) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+        double xpos, ypos;
+        glfwGetCursorPos(m_window, &xpos, &ypos);  // Get mouse position
+
+        m_graph.addNewNode();
+
+        m_graphLayout->addNewNode(xpos,ypos);
+
+    }
 }

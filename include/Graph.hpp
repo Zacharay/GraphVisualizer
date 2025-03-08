@@ -35,6 +35,7 @@ public:
     std::vector<std::vector<std::shared_ptr<Edge>>>adjList;
     Graph(int graphSize);
     void addEdge(int from,int to,int weight=0,bool isBidirectional=false);
+    void addNewNode();
     void resize(int numberOfNodes);
     unsigned int getSize()const;
     void printGraph()const;

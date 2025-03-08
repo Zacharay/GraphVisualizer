@@ -12,6 +12,6 @@ void GraphParser::loadGraph(Graph &graph) {
     for (int i = 0; i < E; i++) {
         int u,v;
         inputFile >> u >> v;
-        graph.addEdge(u,v,0,false);
+        graph.addEdge(u,v,0,true);
     }
 }

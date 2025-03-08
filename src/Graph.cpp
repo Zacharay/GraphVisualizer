@@ -22,6 +22,10 @@ void Graph::resize(int numberOfNodes) {
     adjList.resize(numberOfNodes);
     adjList.reserve(numberOfNodes);
 }
+void Graph::addNewNode() {
+    adjList.resize(adjList.size()+1);
+
+}
 void Graph::printGraph()const{
 
     for(int i=1;i<adjList.size();i++){

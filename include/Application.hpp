@@ -20,6 +20,7 @@ public:
     Application();
 protected:
 
+    void onMouseButton(int button, int action, int mods) override;
     void onUpdate()override;
     void onRender()override;
 };
