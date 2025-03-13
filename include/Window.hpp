@@ -20,7 +20,14 @@ protected:
             win->onMouseButton(button, action, mods);
         }
     };
+    static void CursorPosCallback(GLFWwindow* window, double x, double y) {
+        Window* win = static_cast<Window*>(glfwGetWindowUserPointer(window));
+        if (win) {
+            win->onCursorPosition(x,y);
+        }
+    }
     virtual void onMouseButton(int button,int action,int mods)=0;
+    virtual void onCursorPosition(float x,float y)=0;
     virtual void onUpdate()=0;
     virtual void onRender()=0;
 

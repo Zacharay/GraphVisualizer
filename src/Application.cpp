@@ -39,13 +39,34 @@ void Application::onUpdate() {
     m_graphController.update();
 }
 void Application::onMouseButton(int button, int action, int mods) {
-    if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS) {
+    if (button == GLFW_MOUSE_BUTTON_LEFT) {
         double xpos, ypos;
         glfwGetCursorPos(m_window, &xpos, &ypos);  // Get mouse position
 
-        m_graph.addNewNode();
-
-        m_graphLayout->addNewNode(xpos,ypos);
+        if(m_mouseMode == MouseMode::SPAWN_NODES) {
+            if(action == GLFW_PRESS) {
+                m_graph.addNewNode();
+                m_graphLayout->addNewNode(xpos,ypos);
+            }
+        }
+        else if(m_mouseMode == MouseMode::MOVE) {
+            if(action==GLFW_PRESS) {
+                m_selectedNode = m_graphLayout->getNodeIdxByCoordinates(xpos,ypos);
+                m_isDragging = true;
+            }
+            else if(action == GLFW_RELEASE) {
+                m_selectedNode = -1;
+                m_isDragging = false;
+            }
+        }
 
     }
 }
+void Application::onCursorPosition(float x, float y) {
+    if(m_selectedNode != -1 && m_isDragging) {
+
+
+        m_graphLayout->setNodePosition(m_selectedNode,x,y);
+    }
+}
+

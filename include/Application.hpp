@@ -7,6 +7,13 @@
 #include "GraphRenderer.hpp"
 #include "GraphController.hpp"
 
+enum MouseMode {
+    SPAWN_NODES,
+    SPAWN_EDGES,
+    MOVE
+};
+
+
 class Application : public Window{
     Renderer m_renderer;
     Graph m_graph;
@@ -15,11 +22,18 @@ class Application : public Window{
     GraphParser m_graphParser;
     std::unique_ptr<GraphRenderer> m_graphRenderer;
     std::shared_ptr<GraphLayout> m_graphLayout;
+    MouseMode m_mouseMode = MouseMode::MOVE;
+
+    //temporary
+    bool m_isDragging = false;
+    int m_selectedNode = -1;
+
     void processInput(float deltaTime);
 public:
     Application();
 protected:
 
+    void onCursorPosition(float x, float y) override;
     void onMouseButton(int button, int action, int mods) override;
     void onUpdate()override;
     void onRender()override;

@@ -30,6 +30,7 @@ Window::Window()
 
     // Set the mouse button callback
     glfwSetMouseButtonCallback(m_window, MouseButtonCallback);
+    glfwSetCursorPosCallback(m_window,CursorPosCallback);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Failed to initialize GLAD" << std::endl;

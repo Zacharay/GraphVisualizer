@@ -47,9 +47,27 @@ void GraphLayout::nodesAtCircle(float circleRadius) {
         theta += thetaStep;
     }
 }
+int GraphLayout::getNodeIdxByCoordinates(float x, float y) const {
+    for(int i=0;i<m_nodes.size();i++) {
+        const Node &currentNode = m_nodes[i];
+
+        float distance = sqrt((x-currentNode.posX)*(x-currentNode.posX) + (y-currentNode.posY)*(y-currentNode.posY));
+
+        if(distance < Config::getInstance().getNodeRadius()) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 void GraphLayout::setNodeColor(int nodeIndex,const glm::vec3 &newColor) {
     m_nodes[nodeIndex].color = newColor;
 }
+void GraphLayout::setNodePosition(unsigned int nodeIndex, float x, float y) {
+    m_nodes[nodeIndex].posX = x;
+    m_nodes[nodeIndex].posY = y;
+}
+
 void GraphLayout::addNewNode(float posX,float posY) {
     m_nodes.emplace_back(posX,posY,glm::vec3(0,1,0));
 }

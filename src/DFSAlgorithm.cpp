@@ -23,6 +23,9 @@ void DFSAlgorithm::update() {
     int parentNodeIndex = edge->destination;
 
 
+    if (!edge->isActivated()) {
+        edge->activation_time = std::chrono::high_resolution_clock::now();
+    }
 
     //if node was already visited ignore it with timing mechanism
     if (m_visited[parentNodeIndex] == true) {
@@ -31,9 +34,6 @@ void DFSAlgorithm::update() {
         return;
     }
 
-    if (!edge->isActivated()) {
-        edge->activation_time = std::chrono::high_resolution_clock::now();
-    }
 
     if (currentTime - lastUpdateTime < 1.0 ) return;
         lastUpdateTime = currentTime; // Reset timer
