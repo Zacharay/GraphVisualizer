@@ -17,7 +17,7 @@ enum MouseMode {
 class Application : public Window{
     Renderer m_renderer;
     Graph m_graph;
-    GraphController m_graphController;
+    std::unique_ptr<GraphController> m_graphController;
     std::unique_ptr<DFSAlgorithm> dfs;
     GraphParser m_graphParser;
     std::unique_ptr<GraphRenderer> m_graphRenderer;

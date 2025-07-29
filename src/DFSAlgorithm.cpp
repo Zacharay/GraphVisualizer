@@ -2,52 +2,35 @@
 #include "GLFW/glfw3.h"
 
 void DFSAlgorithm::start(int startingNode) {
-    if (m_isRunning) return;
-
-    m_isRunning = true;
-
+    
     m_visited[startingNode] = true;
-    m_layout->setNodeColor(startingNode,glm::vec3(1.0f,0,0));
+    m_layout->setNodeColor(startingNode,glm::vec3(1.0f,1.0f,0));
 
     for (auto edge : m_graph.adjList[startingNode]) {
         m_dfsStack.push(edge);
     }
 }
-void DFSAlgorithm::update() {
-    static double lastUpdateTime = glfwGetTime(); // Track last update time
-    double currentTime = glfwGetTime();
-
-    if(!m_isRunning || m_dfsStack.empty())return;
+std::optional<TraversalStep> DFSAlgorithm::step() {
+    if ( m_dfsStack.empty()) return std::nullopt;
 
     std::shared_ptr<Edge> edge = m_dfsStack.top();
     int parentNodeIndex = edge->destination;
 
-
-    if (!edge->isActivated()) {
-        edge->activation_time = std::chrono::high_resolution_clock::now();
-    }
-
-    //if node was already visited ignore it with timing mechanism
-    if (m_visited[parentNodeIndex] == true) {
-        lastUpdateTime = glfwGetTime();
+    if (m_visited[parentNodeIndex]) {
         m_dfsStack.pop();
-        return;
+        return std::nullopt;
     }
-
-
-    if (currentTime - lastUpdateTime < 1.0 ) return;
-        lastUpdateTime = currentTime; // Reset timer
-
-    m_layout->setNodeColor(parentNodeIndex,glm::vec3(1.0f,0,0));
 
     m_visited[parentNodeIndex] = true;
     m_dfsStack.pop();
 
-    for(auto edge : m_graph.adjList[parentNodeIndex]) {
-        if(! m_visited[edge->destination]) {
-            m_dfsStack.push(edge);
-
+    for (auto& e : m_graph.adjList[parentNodeIndex]) {
+        if (!m_visited[e->destination]) {
+            m_dfsStack.push(e);
         }
     }
-
+    TraversalStep step ;
+    step.visitedNode = parentNodeIndex;
+    step.visitedEdge = edge;
+    return step;
 }

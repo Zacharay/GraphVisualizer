@@ -11,7 +11,9 @@ Application::Application() : Window(),m_graph(0){
     m_graphLayout= std::make_shared<GraphLayout>(m_graph.getSize(),m_graph);
     m_graphLayout->nodesAtCircle(400.0f);
 
-    m_graphController.setAlgorithm(std::make_unique<DFSAlgorithm>(m_graph,m_graphLayout));
+
+    m_graphController = std::make_unique<GraphController>(m_graphLayout);
+    m_graphController->setAlgorithm(std::make_unique<DFSAlgorithm>(m_graph,m_graphLayout));
     m_graphRenderer = std::make_unique<GraphRenderer>(m_graphLayout,m_renderer);
 
 
@@ -22,7 +24,7 @@ void Application::processInput(float deltaTime) {
         glfwSetWindowShouldClose(m_window,true);
     }
     else if(glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        m_graphController.start(1);
+        m_graphController->start(1);
     }
 }
 
@@ -36,7 +38,7 @@ void Application::onUpdate() {
 
     processInput(deltaTime);
 
-    m_graphController.update();
+    m_graphController->update();
 }
 void Application::onMouseButton(int button, int action, int mods) {
     if (button == GLFW_MOUSE_BUTTON_LEFT) {

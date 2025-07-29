@@ -1,7 +1,6 @@
 #include "GraphRenderer.hpp"
 #include "Config.hpp"
 
-bool x = false;
 
 void GraphRenderer::render()  {
     for(const Node &node:m_layout->getNodes()) {

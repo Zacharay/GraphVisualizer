@@ -7,7 +7,7 @@
 
 class DFSAlgorithm : public GraphAlgorithm {
 private:
-   bool m_isRunning = false;
+
    std::stack<std::shared_ptr<Edge>>m_dfsStack;
    std::vector<bool> m_visited;
 public:
@@ -16,6 +16,6 @@ public:
    }
 
    void start(int startingNode)override;
-   void update()override;
+   std::optional<TraversalStep> step()override;
 
 };
