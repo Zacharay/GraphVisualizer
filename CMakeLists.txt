@@ -19,6 +19,15 @@ file(GLOB_RECURSE SOURCES
     ${CMAKE_SOURCE_DIR}/src/*.cpp
     ${CMAKE_SOURCE_DIR}/src/*.c
 )
+set(IMGUI_DIR ${CMAKE_SOURCE_DIR}/thirdParty/imgui)
+list(APPEND SOURCES
+        ${IMGUI_DIR}/imgui.cpp
+        ${IMGUI_DIR}/imgui_draw.cpp
+        ${IMGUI_DIR}/imgui_tables.cpp
+        ${IMGUI_DIR}/imgui_widgets.cpp
+        ${IMGUI_DIR}/imgui_impl_glfw.cpp
+        ${IMGUI_DIR}/imgui_impl_opengl3.cpp
+)
 
 # Add the executable
 add_executable(GraphVisualizer ${SOURCES}
@@ -30,6 +39,8 @@ add_executable(GraphVisualizer ${SOURCES}
         include/GraphRenderer.hpp
         include/Config.hpp
         include/GraphParser.hpp
+        include/GUI.hpp
+        src/GUI.cpp
 )
 
 # Include directories
@@ -38,5 +49,8 @@ include_directories(${CMAKE_SOURCE_DIR}/thirdParty)
 include_directories(${GLFW_INCLUDE_DIRS})
 include_directories(${CMAKE_SOURCE_DIR}/include)
 # Link libraries
-target_link_libraries(GraphVisualizer PRIVATE glfw ${OPENGL_LIBRARIES})
+target_link_libraries(GraphVisualizer PRIVATE
+        glfw
+        ${OPENGL_LIBRARIES}
+        )
 

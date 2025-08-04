@@ -49,4 +49,8 @@ public:
 
         }
     }
+
+    bool isRunning() const {
+        return m_isRunning;
+    }
 };

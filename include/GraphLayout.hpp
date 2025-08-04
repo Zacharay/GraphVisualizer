@@ -34,4 +34,5 @@ public:
     void setNodePosition(unsigned int nodeIndex,float x,float y);
     void addNewNode(float posX,float posY);
     int getNodeIdxByCoordinates(float x,float y)const;
+    void reset();
 };

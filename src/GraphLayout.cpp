@@ -34,7 +34,7 @@ void GraphLayout::nodesAtCircle(float circleRadius) {
     float theta = 0.0f;
     float thetaStep = 2.0f*M_PI/numNodes;
 
-    const unsigned int windowWidth = Config::getInstance().getWindowWidth();
+    const unsigned int windowWidth = Config::getInstance().getWindowWidth()- 300.0f;
     const unsigned int windowHeight = Config::getInstance().getWindowHeight();
 
     for(Node &node:m_nodes) {
@@ -70,4 +70,16 @@ void GraphLayout::setNodePosition(unsigned int nodeIndex, float x, float y) {
 
 void GraphLayout::addNewNode(float posX,float posY) {
     m_nodes.emplace_back(posX,posY,glm::vec3(0,1,0));
+}
+void GraphLayout::reset() {
+    for(Node &node:m_nodes) {
+        node.color = glm::vec3(0.0f,1.0f,0.0f);
+    }
+
+    for (auto list: m_graph.adjList ) {
+        for (auto edge : list) {
+            edge->activation_time = std::chrono::high_resolution_clock::time_point(std::chrono::high_resolution_clock::duration(-1));
+        }
+    }
+
 }

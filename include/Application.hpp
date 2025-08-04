@@ -6,6 +6,7 @@
 #include "GraphParser.hpp"
 #include "GraphRenderer.hpp"
 #include "GraphController.hpp"
+#include "GUI.hpp"
 
 enum MouseMode {
     SPAWN_NODES,
@@ -22,6 +23,7 @@ class Application : public Window{
     GraphParser m_graphParser;
     std::unique_ptr<GraphRenderer> m_graphRenderer;
     std::shared_ptr<GraphLayout> m_graphLayout;
+    GUI m_gui;
     MouseMode m_mouseMode = MouseMode::MOVE;
 
     //temporary
@@ -29,6 +31,7 @@ class Application : public Window{
     int m_selectedNode = -1;
 
     void processInput(float deltaTime);
+    void updateVisualization();
 public:
     Application();
 protected:
@@ -37,4 +40,5 @@ protected:
     void onMouseButton(int button, int action, int mods) override;
     void onUpdate()override;
     void onRender()override;
+
 };

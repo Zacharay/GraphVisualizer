@@ -3,6 +3,10 @@
 
 #include "Config.hpp"
 
+
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 // Constructor
 Window::Window()
 : frameCount(0),previousTime(glfwGetTime()),m_window(nullptr)
@@ -39,6 +43,20 @@ Window::Window()
 
     glViewport(0, 0, windowWidth, windowHeight);
 
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO();
+    (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;  // Enable Keyboard Controls
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(m_window, true);
+    ImGui_ImplOpenGL3_Init("#version 330");
+
+
 }
 
 // Destructor
@@ -71,17 +89,31 @@ void Window::run()  {
     glfwSwapInterval(0);
     while (!glfwWindowShouldClose(m_window)) {
 
+        // Start ImGui frame
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+
+
         glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
         glClearColor(0.0f,0.0f,0.0f,1.0f);
 
 
         onUpdate();
 
+
         onRender();
+
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         calculateFps();
 
         glfwSwapBuffers(m_window);
         glfwPollEvents();
     }
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 }

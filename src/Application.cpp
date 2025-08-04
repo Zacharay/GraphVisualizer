@@ -30,7 +30,9 @@ void Application::processInput(float deltaTime) {
 
 
 void Application::onRender() {
+    m_gui.renderGUI();
     m_graphRenderer->render();
+
 }
 void Application::onUpdate() {
     float currentFrame = glfwGetTime();
@@ -38,7 +40,8 @@ void Application::onUpdate() {
 
     processInput(deltaTime);
 
-    m_graphController->update();
+    updateVisualization();
+
 }
 void Application::onMouseButton(int button, int action, int mods) {
     if (button == GLFW_MOUSE_BUTTON_LEFT) {
@@ -66,9 +69,30 @@ void Application::onMouseButton(int button, int action, int mods) {
 }
 void Application::onCursorPosition(float x, float y) {
     if(m_selectedNode != -1 && m_isDragging) {
-
-
         m_graphLayout->setNodePosition(m_selectedNode,x,y);
+    }
+}
+void Application::updateVisualization() {
+    VisualizationSettings settings = m_gui.getSettings();
+
+
+    if (!m_graphController->isRunning() && (settings.state == AlgorithmState::STEP ||  settings.state == AlgorithmState::RUNNING)) {
+        m_graphController->start(1);
+    }
+
+    if (settings.state == AlgorithmState::STEP) {
+        m_graphController->update();
+        m_gui.setIdleAlgorithmState();
+    }
+    else if (settings.state == AlgorithmState::IDLE) {
+        m_gui.setIdleAlgorithmState();
+    }
+    else if (settings.state == AlgorithmState::RUNNING) {
+        m_graphController->update();
+    }
+    else if (settings.state == AlgorithmState::RESET) {
+        m_graphLayout->reset();
+        m_gui.setIdleAlgorithmState();
     }
 }
 
