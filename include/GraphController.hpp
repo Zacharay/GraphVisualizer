@@ -1,5 +1,6 @@
 #pragma once
 #include "GraphAlgorithm.hpp"
+#include "GraphLayout.hpp"
 #include <memory>
 
 class GraphController {
@@ -13,6 +14,11 @@ public:
 
     void setAlgorithm(std::unique_ptr<GraphAlgorithm> algo) {
         algorithm = std::move(algo);
+    }
+
+    void resetAlgorithm(std::unique_ptr<GraphAlgorithm> algo) {
+        algorithm = std::move(algo);
+        m_isRunning = false;
     }
 
     void start(int startNode) {
@@ -41,6 +47,10 @@ public:
                     m_layout->setNodeColor(step->visitedNode, glm::vec3(1.0f,0.0f,0.0f));
 
                 if (step->visitedEdge) {
+                    std::cout<<"visited edge to: "<<step->visitedEdge->destination;
+                    std::cout<<"    visited Node : "<<step->visitedNode<<std::endl;
+
+
                     step->visitedEdge->activation_time = std::chrono::high_resolution_clock::now();
                 }
                 m_lastUpdateTimeStamp = std::chrono::high_resolution_clock::now();

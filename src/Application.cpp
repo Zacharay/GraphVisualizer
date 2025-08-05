@@ -2,6 +2,8 @@
 #include "Shader.hpp"
 #include <memory>
 
+#include "BFSAlgorithm.hpp"
+
 float startTime = glfwGetTime();
 Application::Application() : Window(),m_graph(0){
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -13,7 +15,7 @@ Application::Application() : Window(),m_graph(0){
 
 
     m_graphController = std::make_unique<GraphController>(m_graphLayout);
-    m_graphController->setAlgorithm(std::make_unique<DFSAlgorithm>(m_graph,m_graphLayout));
+    m_graphController->setAlgorithm(std::make_unique<BFSAlgorithm>(m_graph,m_graphLayout));
     m_graphRenderer = std::make_unique<GraphRenderer>(m_graphLayout,m_renderer);
 
 
@@ -92,6 +94,7 @@ void Application::updateVisualization() {
     }
     else if (settings.state == AlgorithmState::RESET) {
         m_graphLayout->reset();
+        m_graphController->resetAlgorithm(std::make_unique<DFSAlgorithm>(m_graph,m_graphLayout));
         m_gui.setIdleAlgorithmState();
     }
 }

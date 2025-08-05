@@ -41,6 +41,8 @@ add_executable(GraphVisualizer ${SOURCES}
         include/GraphParser.hpp
         include/GUI.hpp
         src/GUI.cpp
+        include/BFSAlgorithm.hpp
+        src/BFSAlgorithm.cpp
 )
 
 # Include directories
