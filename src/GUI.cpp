@@ -14,9 +14,9 @@ void GUI::renderGUI() {
         ImGuiWindowFlags_NoScrollbar |
         ImGuiWindowFlags_NoSavedSettings);
 
-        static int selected_algorithm = 0;
-        const char* algorithm_items[] = { "DFS", "BFS", "Dijkstra", "A*", "Topological Sort" };
-        ImGui::Combo("Algorithm", &selected_algorithm, algorithm_items, IM_ARRAYSIZE(algorithm_items));
+
+        const char* algorithm_items[] = { "DFS", "BFS"};
+        ImGui::Combo("Algorithm", &m_selectedAlgorithm, algorithm_items, IM_ARRAYSIZE(algorithm_items));
 
         static int start_node = 0;
         ImGui::InputInt("Start Node", &start_node);

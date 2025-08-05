@@ -1,3 +1,4 @@
+#pragma once
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -11,6 +12,11 @@ enum AlgorithmState {
     IDLE
 };
 
+enum AlgorithmGUI {
+    DFS,
+    BFS
+};
+
 struct VisualizationSettings {
     bool highlightVisited = true;
     bool showTraversalOrder = true;
@@ -22,6 +28,7 @@ struct VisualizationSettings {
 class GUI {
 private:
     VisualizationSettings m_settings;
+    int m_selectedAlgorithm  = AlgorithmGUI::DFS;
 public:
     GUI() {}
 
@@ -33,4 +40,5 @@ public:
     void setIdleAlgorithmState() {
         m_settings.state = AlgorithmState::IDLE;
     }
+    int getSelectedAlgorithm() const {return m_selectedAlgorithm;}
 };

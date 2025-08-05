@@ -2,6 +2,7 @@
 #include "GraphAlgorithm.hpp"
 #include "GraphLayout.hpp"
 #include <memory>
+#include "GUI.hpp"
 
 class GraphController {
 private:

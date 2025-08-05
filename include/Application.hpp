@@ -7,6 +7,7 @@
 #include "GraphRenderer.hpp"
 #include "GraphController.hpp"
 #include "GUI.hpp"
+#include <memory>
 
 enum MouseMode {
     SPAWN_NODES,
@@ -32,6 +33,7 @@ class Application : public Window{
 
     void processInput(float deltaTime);
     void updateVisualization();
+    std::unique_ptr<GraphAlgorithm> getSelectedAlgorithm();
 public:
     Application();
 protected:

@@ -2,6 +2,8 @@
 #include "Shader.hpp"
 #include <memory>
 
+#include "GUI.hpp"
+
 #include "BFSAlgorithm.hpp"
 
 float startTime = glfwGetTime();
@@ -15,11 +17,23 @@ Application::Application() : Window(),m_graph(0){
 
 
     m_graphController = std::make_unique<GraphController>(m_graphLayout);
-    m_graphController->setAlgorithm(std::make_unique<BFSAlgorithm>(m_graph,m_graphLayout));
+    m_graphController->setAlgorithm(getSelectedAlgorithm());
     m_graphRenderer = std::make_unique<GraphRenderer>(m_graphLayout,m_renderer);
 
 
 
+}
+std::unique_ptr<GraphAlgorithm> Application::getSelectedAlgorithm() {
+    switch (m_gui.getSelectedAlgorithm()) {
+        case AlgorithmGUI::DFS:
+            return std::make_unique<DFSAlgorithm>(m_graph,m_graphLayout);
+        break;
+        case AlgorithmGUI::BFS:
+            return std::make_unique<BFSAlgorithm>(m_graph,m_graphLayout);
+        break;
+        default:
+            break;
+    }
 }
 void Application::processInput(float deltaTime) {
     if(glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
@@ -79,6 +93,7 @@ void Application::updateVisualization() {
 
 
     if (!m_graphController->isRunning() && (settings.state == AlgorithmState::STEP ||  settings.state == AlgorithmState::RUNNING)) {
+        m_graphController->setAlgorithm(getSelectedAlgorithm());
         m_graphController->start(1);
     }
 
@@ -94,7 +109,7 @@ void Application::updateVisualization() {
     }
     else if (settings.state == AlgorithmState::RESET) {
         m_graphLayout->reset();
-        m_graphController->resetAlgorithm(std::make_unique<DFSAlgorithm>(m_graph,m_graphLayout));
+        m_graphController->resetAlgorithm(getSelectedAlgorithm());
         m_gui.setIdleAlgorithmState();
     }
 }

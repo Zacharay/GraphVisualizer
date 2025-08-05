@@ -11,7 +11,7 @@ void GraphRenderer::render()  {
     for(int from=0;from<edges.size();from++) {
         for(std::shared_ptr<Edge> edge: edges[from]) {
 
-            //preventing edges from overlaping 
+            //preventing edges from overlaping
             if (edge->twin && edge->twin->isActivated()) {
                 continue;
             }
