@@ -11,5 +11,5 @@ private:
     Renderer m_renderer;
 public:
     GraphRenderer(std::shared_ptr<GraphLayout> g,Renderer &r):m_layout(g),m_renderer(r) {};
-    void render();
+    void render(const float animationSpeed);
 };

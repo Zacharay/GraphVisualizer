@@ -2,7 +2,7 @@
 #include "Config.hpp"
 
 
-void GraphRenderer::render()  {
+void GraphRenderer::render(const float animationSpeed)  {
     for(const Node &node:m_layout->getNodes()) {
         m_renderer.drawNode(node.posX,node.posY,node.color);
     }
@@ -26,8 +26,8 @@ void GraphRenderer::render()  {
                 auto now = std::chrono::high_resolution_clock::now();
                 auto timeSinceActivated = std::chrono::duration<float>(now - edge->activation_time).count();
 
-                // Calculate progress (capped at 1.0f)
-                progress = timeSinceActivated>1.0f?1.0f:timeSinceActivated;
+                progress = timeSinceActivated / animationSpeed;
+                if (progress > 1.0f) progress = 1.0f;
             }
             m_renderer.drawAnimatedEdge(
                                glm::vec3(nodeFrom.posX,nodeFrom.posY,1.0f),

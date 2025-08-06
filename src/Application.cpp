@@ -39,15 +39,12 @@ void Application::processInput(float deltaTime) {
     if(glfwGetKey(m_window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(m_window,true);
     }
-    else if(glfwGetKey(m_window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-        m_graphController->start(1);
-    }
 }
 
 
 void Application::onRender() {
-    m_gui.renderGUI();
-    m_graphRenderer->render();
+    m_gui.renderGUI(m_graph.getSize()-1);
+    m_graphRenderer->render(m_gui.getSettings().visualizationSpeed);
 
 }
 void Application::onUpdate() {
@@ -91,21 +88,22 @@ void Application::onCursorPosition(float x, float y) {
 void Application::updateVisualization() {
     VisualizationSettings settings = m_gui.getSettings();
 
+    const float animationSpeed = settings.visualizationSpeed;
 
     if (!m_graphController->isRunning() && (settings.state == AlgorithmState::STEP ||  settings.state == AlgorithmState::RUNNING)) {
         m_graphController->setAlgorithm(getSelectedAlgorithm());
-        m_graphController->start(1);
+        m_graphController->start(m_gui.getStartingNode());
     }
 
     if (settings.state == AlgorithmState::STEP) {
-        m_graphController->update();
+        m_graphController->update(animationSpeed);
         m_gui.setIdleAlgorithmState();
     }
     else if (settings.state == AlgorithmState::IDLE) {
         m_gui.setIdleAlgorithmState();
     }
     else if (settings.state == AlgorithmState::RUNNING) {
-        m_graphController->update();
+        m_graphController->update(animationSpeed);
     }
     else if (settings.state == AlgorithmState::RESET) {
         m_graphLayout->reset();

@@ -1,7 +1,7 @@
 #include "GUI.hpp"
 #include "Config.hpp"
 
-void GUI::renderGUI() {
+void GUI::renderGUI(int maxNode) {
     const float sideBarWidth = 300.0f;
     // Ustaw pozycję i rozmiar okna ImGui - po prawej stronie, na całej wysokości
     ImGui::SetNextWindowPos(ImVec2(Config::getInstance().getWindowWidth()-sideBarWidth, 0));
@@ -18,8 +18,7 @@ void GUI::renderGUI() {
         const char* algorithm_items[] = { "DFS", "BFS"};
         ImGui::Combo("Algorithm", &m_selectedAlgorithm, algorithm_items, IM_ARRAYSIZE(algorithm_items));
 
-        static int start_node = 0;
-        ImGui::InputInt("Start Node", &start_node);
+        ImGui::SliderInt("Start Node", &m_startingNode, 0, maxNode);
 
         ImGui::Separator();
 
@@ -41,12 +40,8 @@ void GUI::renderGUI() {
 
         ImGui::Separator();
 
-        static float speed = 1.0f;
-        ImGui::SliderFloat("Speed", &speed, 0.1f, 5.0f, "%.1f×");
 
-        ImGui::Checkbox("Highlight visited nodes", &m_settings.highlightVisited);
-        ImGui::Checkbox("Show traversal order", &m_settings.showTraversalOrder);
-        ImGui::Checkbox("Mark activated edges", &m_settings.markActivatedEdges);
+        ImGui::SliderFloat("Step Delay", &m_settings.visualizationSpeed, 0.5f, 2.0f, "%.1fs");
 
 
     ImGui::End();

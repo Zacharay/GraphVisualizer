@@ -30,7 +30,7 @@ public:
         }
     }
 
-    void update() {
+    void update(float visualizationSpeed) {
         if (!algorithm || !m_isRunning)return;
 
         if (m_lastUpdateTimeStamp == std::chrono::time_point<std::chrono::high_resolution_clock>::min()) {
@@ -41,7 +41,8 @@ public:
 
         auto elapsed=std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - m_lastUpdateTimeStamp).count();
 
-        if (elapsed > 1000) {
+
+        if (elapsed > 1000.0f * visualizationSpeed) {
             auto step = algorithm->step();
             if (step) {
                 if (step->visitedNode != -1)
