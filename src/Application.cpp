@@ -5,6 +5,7 @@
 #include "GUI.hpp"
 
 #include "BFSAlgorithm.hpp"
+#include "input/MouseModeFactory.hpp"
 
 float startTime = glfwGetTime();
 Application::Application() : Window(),m_graph(0){
@@ -20,7 +21,8 @@ Application::Application() : Window(),m_graph(0){
     m_graphController->setAlgorithm(getSelectedAlgorithm());
     m_graphRenderer = std::make_unique<GraphRenderer>(m_graphLayout,m_renderer);
 
-
+    m_currentMouseModeType = m_gui.getCurrentMouseMode();
+    m_activeMouseMode = MouseModeFactory::create(m_currentMouseModeType,m_graph,*m_graphLayout);
 
 }
 std::unique_ptr<GraphAlgorithm> Application::getSelectedAlgorithm() {
@@ -53,37 +55,42 @@ void Application::onUpdate() {
 
     processInput(deltaTime);
 
+    MouseModeType selectedMouseMode = m_gui.getCurrentMouseMode();
+
+    if (selectedMouseMode != m_currentMouseModeType) {
+        m_currentMouseModeType = selectedMouseMode;
+        m_activeMouseMode = MouseModeFactory::create(m_currentMouseModeType,m_graph,*m_graphLayout);
+    }
+
     updateVisualization();
 
 }
 void Application::onMouseButton(int button, int action, int mods) {
-    if (button == GLFW_MOUSE_BUTTON_LEFT) {
         double xpos, ypos;
         glfwGetCursorPos(m_window, &xpos, &ypos);  // Get mouse position
 
-        if(m_mouseMode == MouseMode::SPAWN_NODES) {
-            if(action == GLFW_PRESS) {
-                m_graph.addNewNode();
-                m_graphLayout->addNewNode(xpos,ypos);
-            }
-        }
-        else if(m_mouseMode == MouseMode::MOVE) {
-            if(action==GLFW_PRESS) {
-                m_selectedNode = m_graphLayout->getNodeIdxByCoordinates(xpos,ypos);
-                m_isDragging = true;
-            }
-            else if(action == GLFW_RELEASE) {
-                m_selectedNode = -1;
-                m_isDragging = false;
-            }
-        }
 
-    }
+        if (action == GLFW_PRESS) {
+            m_activeMouseMode->onMouseDown(button,xpos,ypos);
+        }
+        else if (action== GLFW_RELEASE) {
+            m_activeMouseMode->onMouseUp(button,xpos,ypos);
+        }
+        // else if(m_mouseMode == MouseMode::MOVE) {
+        //     if(action==GLFW_PRESS) {
+        //         m_selectedNode = m_graphLayout->getNodeIdxByCoordinates(xpos,ypos);
+        //         m_isDragging = true;
+        //     }
+        //     else if(action == GLFW_RELEASE) {
+        //         m_selectedNode = -1;
+        //         m_isDragging = false;
+        //     }
+        // }
+
+
 }
 void Application::onCursorPosition(float x, float y) {
-    if(m_selectedNode != -1 && m_isDragging) {
-        m_graphLayout->setNodePosition(m_selectedNode,x,y);
-    }
+    m_activeMouseMode->onMouseMove(x,y);
 }
 void Application::updateVisualization() {
     VisualizationSettings settings = m_gui.getSettings();

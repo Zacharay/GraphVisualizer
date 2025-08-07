@@ -1,8 +1,9 @@
 #include "GUI.hpp"
 #include "Config.hpp"
+#include "input/MouseModeFactory.hpp"
 
 void GUI::renderGUI(int maxNode) {
-    const float sideBarWidth = 300.0f;
+    const float sideBarWidth = Config::getInstance().getSideBarWidth();
     // Ustaw pozycję i rozmiar okna ImGui - po prawej stronie, na całej wysokości
     ImGui::SetNextWindowPos(ImVec2(Config::getInstance().getWindowWidth()-sideBarWidth, 0));
     ImGui::SetNextWindowSize(ImVec2(sideBarWidth, (float)Config::getInstance().getWindowHeight()));
@@ -14,6 +15,13 @@ void GUI::renderGUI(int maxNode) {
         ImGuiWindowFlags_NoScrollbar |
         ImGuiWindowFlags_NoSavedSettings);
 
+
+
+        if (ImGui::Combo("Behaviours", &m_currentMouseModeIdx, MouseModeNames, IM_ARRAYSIZE(MouseModeNames)))
+        {
+            m_currentMouseMode = static_cast<MouseModeType>(m_currentMouseModeIdx);
+        }
+        ImGui::Separator();
 
         const char* algorithm_items[] = { "DFS", "BFS"};
         ImGui::Combo("Algorithm", &m_selectedAlgorithm, algorithm_items, IM_ARRAYSIZE(algorithm_items));

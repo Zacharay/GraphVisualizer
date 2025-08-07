@@ -9,11 +9,8 @@
 #include "GUI.hpp"
 #include <memory>
 
-enum MouseMode {
-    SPAWN_NODES,
-    SPAWN_EDGES,
-    MOVE
-};
+#include "input/IMouseMode.hpp"
+
 
 
 class Application : public Window{
@@ -24,12 +21,11 @@ class Application : public Window{
     GraphParser m_graphParser;
     std::unique_ptr<GraphRenderer> m_graphRenderer;
     std::shared_ptr<GraphLayout> m_graphLayout;
-    GUI m_gui;
-    MouseMode m_mouseMode = MouseMode::MOVE;
 
-    //temporary
-    bool m_isDragging = false;
-    int m_selectedNode = -1;
+    std::unique_ptr<IMouseMode> m_activeMouseMode;
+    MouseModeType m_currentMouseModeType;
+
+    GUI m_gui;
 
     void processInput(float deltaTime);
     void updateVisualization();

@@ -5,6 +5,8 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include <string>
 
+#include "input/MouseModeFactory.hpp"
+
 enum AlgorithmState {
     RUNNING,
     STEP,
@@ -34,6 +36,10 @@ private:
     VisualizationSettings m_settings;
     int m_selectedAlgorithm  = AlgorithmGUI::DFS;
     int m_startingNode = 1;
+
+    int m_currentMouseModeIdx = 0;
+    MouseModeType m_currentMouseMode = MouseModeType::SPAWN_NODES;
+
 public:
     GUI() {}
 
@@ -47,4 +53,5 @@ public:
     }
     int getSelectedAlgorithm() const {return m_selectedAlgorithm;}
     int getStartingNode() const {return m_startingNode;}
+    MouseModeType getCurrentMouseMode() const {return m_currentMouseMode;}
 };

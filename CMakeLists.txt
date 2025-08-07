@@ -43,6 +43,12 @@ add_executable(GraphVisualizer ${SOURCES}
         src/GUI.cpp
         include/BFSAlgorithm.hpp
         src/BFSAlgorithm.cpp
+        include/input/MouseModeFactory.hpp
+        include/input/IMouseMode.hpp
+        include/input/SpawnNodesMode.hpp
+        src/input/SpawnNodesMode.cpp
+        include/input/MoveNodesMode.hpp
+        src/input/MoveNodesMode.cpp
 )
 
 # Include directories

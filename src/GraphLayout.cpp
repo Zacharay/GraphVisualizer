@@ -34,7 +34,7 @@ void GraphLayout::nodesAtCircle(float circleRadius) {
     float theta = 0.0f;
     float thetaStep = 2.0f*M_PI/numNodes;
 
-    const unsigned int windowWidth = Config::getInstance().getWindowWidth()- 300.0f;
+    const unsigned int windowWidth = Config::getInstance().getWindowWidth()- Config::getInstance().getSideBarWidth();
     const unsigned int windowHeight = Config::getInstance().getWindowHeight();
 
     for(Node &node:m_nodes) {
