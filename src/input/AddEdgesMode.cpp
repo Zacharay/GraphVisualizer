@@ -9,7 +9,7 @@ void AddEdgesMode::onMouseDown(int button, double x, double y) {
         int temp = m_graphLayout.getNodeIdxByCoordinates(x,y);
 
         if (temp!= -1 && temp != m_selectedNode) {
-            m_graph.addEdge(temp, m_selectedNode,0,true);
+            m_graph.addEdge(m_selectedNode, temp,0,false);
             m_selectedNode = -1;
         }
     }

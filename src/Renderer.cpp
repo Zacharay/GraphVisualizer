@@ -120,6 +120,44 @@ void Renderer::drawLine(glm::vec3 start,glm::vec3 end,glm::vec3 color) {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
 }
+void Renderer::drawArrowhead(glm::vec3 start, glm::vec3 end, glm::vec3 color) {
+    glm::vec2 dir = glm::normalize(glm::vec2(end) - glm::vec2(start));
+    glm::vec2 perp = glm::vec2(-dir.y, dir.x);
+
+    float arrowLength = 16.0f;
+    float arrowWidth = 8.0f;
+
+    glm::vec2 tip = glm::vec2(end) ; // offset to avoid overlap with node
+    glm::vec2 left = tip - dir * arrowLength + perp * arrowWidth;
+    glm::vec2 right = tip - dir * arrowLength - perp * arrowWidth;
+
+    std::vector<float> arrowVertices = {
+        tip.x, tip.y, end.z,
+        left.x, left.y, end.z,
+        right.x, right.y, end.z
+    };
+
+    unsigned int arrowVAO, arrowVBO;
+    glGenVertexArrays(1, &arrowVAO);
+    glGenBuffers(1, &arrowVBO);
+    glBindVertexArray(arrowVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, arrowVBO);
+    glBufferData(GL_ARRAY_BUFFER, arrowVertices.size() * sizeof(float), arrowVertices.data(), GL_STATIC_DRAW);
+    glEnableVertexAttribArray(0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, nullptr);
+
+    m_shader.useProgram();
+    m_shader.setMat4(m_projMatrix, "projection");
+    m_shader.setMat4(glm::mat4(1.0f), "view");
+    m_shader.setMat4(glm::mat4(1.0f), "model");
+    m_shader.setVec3(color, "color");
+
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+
+    glBindVertexArray(0);
+    glDeleteBuffers(1, &arrowVBO);
+    glDeleteVertexArrays(1, &arrowVAO);
+}
 void Renderer::drawAnimatedEdge(glm::vec3 start, glm::vec3 end,float progress) {
     std::vector<float>vertexPositions={
         start.x,start.y,start.z,

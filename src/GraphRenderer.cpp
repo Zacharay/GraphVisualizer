@@ -44,10 +44,32 @@ void GraphRenderer::render(const float animationSpeed)  {
                 glm::vec2 newFrom = from + dir * nodeRadius;
                 glm::vec2 newTo = to - dir * nodeRadius;
 
-                m_renderer.drawAnimatedEdge(
+
+                if (!edge->isBidirectional) {
+                    m_renderer.drawAnimatedEdge(
+                    glm::vec3(newFrom, 1.0f),
+                    glm::vec3(newTo - 16.0f * dir, 1.0f),
+                    progress);
+
+                    // Draw static arrowhead at the end of the edge
+                    glm::vec3 arrowColor = edge->isActivated()
+                        ? glm::vec3(1.0f, 0.3f, 0.3f) // Red for active
+                        : glm::vec3(0.3f, 0.3f, 1.0f); // Gray for inactive
+
+                    m_renderer.drawArrowhead(
+                        glm::vec3(newFrom, 1.0f),
+                        glm::vec3(newTo, 1.0f),
+                        arrowColor
+                    );
+                }
+                else {
+                    m_renderer.drawAnimatedEdge(
                     glm::vec3(newFrom, 1.0f),
                     glm::vec3(newTo, 1.0f),
                     progress);
+
+                }
+
             } else {
                 // Nodes are on top of each other — avoid division by zero
                 m_renderer.drawAnimatedEdge(
@@ -55,6 +77,8 @@ void GraphRenderer::render(const float animationSpeed)  {
                     glm::vec3(to, 1.0f),
                     progress);
             }
+
+
 
         }
     }
