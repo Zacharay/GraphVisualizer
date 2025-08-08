@@ -39,4 +39,6 @@ public:
     void resize(int numberOfNodes);
     unsigned int getSize()const;
     void printGraph()const;
+private:
+    bool doesEdgeExist(int from,int to);
 };

@@ -18,6 +18,7 @@ Window::Window()
     }
     const unsigned int windowWidth = Config::getInstance().getWindowWidth();
     const unsigned int windowHeight = Config::getInstance().getWindowHeight();
+    glfwWindowHint(GLFW_SAMPLES, 8);
 
     m_window = glfwCreateWindow(windowWidth, windowHeight, "OpenGL Window", nullptr, nullptr);
     if (!m_window) {
@@ -42,7 +43,7 @@ Window::Window()
     }
 
     glViewport(0, 0, windowWidth, windowHeight);
-
+    glEnable(GL_MULTISAMPLE);
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
     ImGuiIO& io = ImGui::GetIO();

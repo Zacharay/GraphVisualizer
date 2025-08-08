@@ -29,10 +29,32 @@ void GraphRenderer::render(const float animationSpeed)  {
                 progress = timeSinceActivated / animationSpeed;
                 if (progress > 1.0f) progress = 1.0f;
             }
-            m_renderer.drawAnimatedEdge(
-                               glm::vec3(nodeFrom.posX,nodeFrom.posY,1.0f),
-                               glm::vec3(nodeTo.posX,nodeTo.posY,1.0f),
-                               progress);
+
+            const float nodeRadius = Config::getInstance().getNodeRadius();
+
+            glm::vec2 from(nodeFrom.posX, nodeFrom.posY);
+            glm::vec2 to(nodeTo.posX, nodeTo.posY);
+
+            // Direction vector
+            glm::vec2 dir = to - from;
+            float distance = glm::length(dir);
+            if (distance > 1e-5f) {
+                dir /= distance; // normalize
+
+                glm::vec2 newFrom = from + dir * nodeRadius;
+                glm::vec2 newTo = to - dir * nodeRadius;
+
+                m_renderer.drawAnimatedEdge(
+                    glm::vec3(newFrom, 1.0f),
+                    glm::vec3(newTo, 1.0f),
+                    progress);
+            } else {
+                // Nodes are on top of each other — avoid division by zero
+                m_renderer.drawAnimatedEdge(
+                    glm::vec3(from, 1.0f),
+                    glm::vec3(to, 1.0f),
+                    progress);
+            }
 
         }
     }

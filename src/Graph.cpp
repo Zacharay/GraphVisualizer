@@ -6,6 +6,8 @@ Graph::Graph(int graphSize){
 }
 void Graph::addEdge(int from,int to,int weight,bool isBidirectional){
 
+    if (doesEdgeExist(from,to))return;
+
     std::shared_ptr<Edge> edge = std::make_shared<Edge>(to, weight, isBidirectional);
     adjList[from].push_back(edge);
 
@@ -17,6 +19,14 @@ void Graph::addEdge(int from,int to,int weight,bool isBidirectional){
         twinEdge->twin = edge;
     }
 
+}
+bool Graph::doesEdgeExist(int from,int to) {
+    for (auto edge : adjList[from]) {
+        if (edge->destination == to) {
+            return true;
+        }
+    }
+    return false;
 }
 void Graph::resize(int numberOfNodes) {
     adjList.resize(numberOfNodes);
