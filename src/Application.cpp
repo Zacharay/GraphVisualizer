@@ -5,6 +5,7 @@
 #include "GUI.hpp"
 
 #include "BFSAlgorithm.hpp"
+#include "TextRenderer.hpp"
 #include "input/MouseModeFactory.hpp"
 
 float startTime = glfwGetTime();
@@ -23,6 +24,7 @@ Application::Application() : Window(),m_graph(0){
 
     m_currentMouseModeType = m_gui.getCurrentMouseMode();
     m_activeMouseMode = MouseModeFactory::create(m_currentMouseModeType,m_graph,*m_graphLayout);
+
 
 }
 std::unique_ptr<GraphAlgorithm> Application::getSelectedAlgorithm() {

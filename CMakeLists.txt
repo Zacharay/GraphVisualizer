@@ -51,6 +51,9 @@ add_executable(GraphVisualizer ${SOURCES}
         src/input/MoveNodesMode.cpp
         include/input/AddEdgesMode.hpp
         src/input/AddEdgesMode.cpp
+        src/TextRenderer.cpp
+        include/TextRenderer.hpp
+        src/stb_image.cpp
 )
 
 # Include directories

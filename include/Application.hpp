@@ -8,13 +8,14 @@
 #include "GraphController.hpp"
 #include "GUI.hpp"
 #include <memory>
-
+#include "TextRenderer.hpp"
 #include "input/IMouseMode.hpp"
 
 
 
 class Application : public Window{
     Renderer m_renderer;
+
     Graph m_graph;
     std::unique_ptr<GraphController> m_graphController;
     std::unique_ptr<DFSAlgorithm> dfs;
