@@ -1,5 +1,5 @@
-#include "GUI.hpp"
-#include "Config.hpp"
+#include "layout/GUI.hpp"
+#include "../include/utils/Config.hpp"
 #include "input/MouseModeFactory.hpp"
 
 void GUI::renderGUI(int maxNode) {

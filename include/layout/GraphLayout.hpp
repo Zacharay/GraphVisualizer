@@ -1,5 +1,5 @@
 #pragma once
-#include <Graph.hpp>
+#include <core/Graph.hpp>
 #include <iostream>
 #include <ostream>
 #include <vector>
@@ -34,5 +34,6 @@ public:
     void setNodePosition(unsigned int nodeIndex,float x,float y);
     void addNewNode(float posX,float posY);
     int getNodeIdxByCoordinates(float x,float y)const;
+    float randJitter(const float maxJitter = 50.0f);
     void reset();
 };

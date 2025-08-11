@@ -31,18 +31,18 @@ list(APPEND SOURCES
 
 # Add the executable
 add_executable(GraphVisualizer ${SOURCES}
-        src/Window.cpp
+        src/core/Window.cpp
         src/main.cpp
-        include/Window.hpp
-        include/Application.hpp
-        src/Shader.cpp
-        include/GraphRenderer.hpp
-        include/Config.hpp
-        include/GraphParser.hpp
-        include/GUI.hpp
-        src/GUI.cpp
-        include/BFSAlgorithm.hpp
-        src/BFSAlgorithm.cpp
+        include/core/Window.hpp
+        include/core/Application.hpp
+        src/render/Shader.cpp
+        include/render/GraphRenderer.hpp
+        include/utils/Config.hpp
+        include/utils/GraphParser.hpp
+        include/layout/GUI.hpp
+        src/layout/GUI.cpp
+        include/algorithms/BFSAlgorithm.hpp
+        src/algorithms/BFSAlgorithm.cpp
         include/input/MouseModeFactory.hpp
         include/input/IMouseMode.hpp
         include/input/SpawnNodesMode.hpp
@@ -51,9 +51,14 @@ add_executable(GraphVisualizer ${SOURCES}
         src/input/MoveNodesMode.cpp
         include/input/AddEdgesMode.hpp
         src/input/AddEdgesMode.cpp
-        src/TextRenderer.cpp
-        include/TextRenderer.hpp
-        src/stb_image.cpp
+        src/render/TextRenderer.cpp
+        include/render/TextRenderer.hpp
+        src/utils/stb_image.cpp
+        include/core/AnimationController.hpp
+        include/animations/VisualizationEvent.hpp
+        src/animations/VisualizationEvent.cpp
+        include/animations/VisitNode.hpp
+        include/animations/VisitEdge.hpp
 )
 
 # Include directories

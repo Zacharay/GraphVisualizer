@@ -1,4 +1,7 @@
-#include "DFSAlgorithm.hpp"
+#include "algorithms/DFSAlgorithm.hpp"
+
+#include "animations/VisitEdge.hpp"
+#include "animations/VisitNode.hpp"
 #include "GLFW/glfw3.h"
 
 void DFSAlgorithm::start(int startingNode) {
@@ -10,16 +13,21 @@ void DFSAlgorithm::start(int startingNode) {
         m_dfsStack.push(edge);
     }
 }
-std::optional<TraversalStep> DFSAlgorithm::step() {
-    if ( m_dfsStack.empty()) return std::nullopt;
+std::vector<std::shared_ptr<VisualizationEvent>> DFSAlgorithm::step() {
+
+    std::vector<std::shared_ptr<VisualizationEvent>> events;
+    if ( m_dfsStack.empty()) return events;
 
     std::shared_ptr<Edge> edge = m_dfsStack.top();
     int parentNodeIndex = edge->destination;
 
+
     if (m_visited[parentNodeIndex]) {
         m_dfsStack.pop();
-        return std::nullopt;
+        return events;
     }
+    events.push_back(std::make_shared<VisitEdge>(edge));
+    events.push_back(std::make_shared<VisitNode>(parentNodeIndex));
 
     m_visited[parentNodeIndex] = true;
     m_dfsStack.pop();
@@ -27,10 +35,8 @@ std::optional<TraversalStep> DFSAlgorithm::step() {
     for (auto& e : m_graph.adjList[parentNodeIndex]) {
         if (!m_visited[e->destination]) {
             m_dfsStack.push(e);
+
         }
     }
-    TraversalStep step;
-    step.visitedNode = parentNodeIndex;
-    step.visitedEdge = edge;
-    return step;
+    return events;
 }

@@ -6,7 +6,7 @@
 #include <map>
 #include <vector>
 #include "glm/glm.hpp"
-#include "stb_image.h"
+#include "utils/stb_image.h"
 
 
 struct Character {

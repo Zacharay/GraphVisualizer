@@ -1,12 +1,12 @@
-#include "Window.hpp"
+#include "../../include/core/Window.hpp"
 #include <iostream>
 
-#include "Config.hpp"
+#include "../../include/utils/Config.hpp"
 
 
-#include "imgui/imgui.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
+#include "../../thirdParty/imgui/imgui.h"
+#include "../../thirdParty/imgui/imgui_impl_glfw.h"
+#include "../../thirdParty/imgui/imgui_impl_opengl3.h"
 // Constructor
 Window::Window()
 : frameCount(0),previousTime(glfwGetTime()),m_window(nullptr)

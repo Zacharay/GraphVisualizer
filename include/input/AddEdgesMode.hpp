@@ -1,6 +1,6 @@
 #pragma once
-#include <Graph.hpp>
-#include "GraphLayout.hpp"
+#include <core/Graph.hpp>
+#include "layout/GraphLayout.hpp"
 
 #include "IMouseMode.hpp"
 

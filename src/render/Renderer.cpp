@@ -1,9 +1,9 @@
-#include "Renderer.hpp"
+#include "render/Renderer.hpp"
 
 #include <iostream>
 
-#include "Config.hpp"
-#include  "Window.hpp"
+#include "../include/utils/Config.hpp"
+#include "../include/core/Window.hpp"
 
 
 

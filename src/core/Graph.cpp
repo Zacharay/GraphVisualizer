@@ -1,4 +1,4 @@
-#include "Graph.hpp"
+#include "core/Graph.hpp"
 #include <iostream>
 Graph::Graph(int graphSize){
     adjList.resize(graphSize);
@@ -8,11 +8,11 @@ void Graph::addEdge(int from,int to,int weight,bool isBidirectional){
 
     if (doesEdgeExist(from,to))return;
 
-    std::shared_ptr<Edge> edge = std::make_shared<Edge>(to, weight, isBidirectional);
+    std::shared_ptr<Edge> edge = std::make_shared<Edge>(from,to, weight, isBidirectional);
     adjList[from].push_back(edge);
 
     if (isBidirectional) {
-        std::shared_ptr<Edge> twinEdge = std::make_shared<Edge>(from, weight, isBidirectional);
+        std::shared_ptr<Edge> twinEdge = std::make_shared<Edge>(to,from, weight, isBidirectional);
         adjList[to].push_back(twinEdge);
         // Assign twin pointers after both edges exist
         edge->twin = twinEdge;

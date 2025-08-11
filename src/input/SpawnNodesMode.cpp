@@ -1,6 +1,6 @@
 #include "input/SpawnNodesMode.hpp"
 
-#include "Config.hpp"
+#include "../../include/utils/Config.hpp"
 
 void SpawnNodesMode::onMouseDown(int button, double x, double y) {
 

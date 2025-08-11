@@ -1,8 +1,8 @@
 #pragma once
 #include <string>
 
-#include "Config.hpp"
-#include "Graph.hpp"
+#include "utils/Config.hpp"
+#include "core/Graph.hpp"
 
 enum ParsingMethod {
     STANDARD,
@@ -12,7 +12,7 @@ enum ParsingMethod {
 class GraphParser{
 public:
     const std::string m_inputFile = Config::getInstance().getInputFileName();
-    ParsingMethod method = ParsingMethod::STANDARD;
+    ParsingMethod m_parsingMethod = ParsingMethod::STANDARD_WEIGHTED;
     GraphParser()=default;
     void loadGraph(Graph& graph);
 private:

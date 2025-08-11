@@ -1,12 +1,27 @@
-#include "GraphRenderer.hpp"
-#include "Config.hpp"
+#include "render/GraphRenderer.hpp"
+#include "../include/utils/Config.hpp"
+#include "core/AnimationController.hpp"
 
 
+void GraphRenderer::render(std::vector<std::shared_ptr<VisualizationEvent>>& events,float animationSpeed,float time)  {
+    // Reset flags
+    for (auto& edgesFrom : m_layout->getEdges()) {
+        for (auto& edge : edgesFrom) {
+            edge->skipDraw = false;
+        }
+    }
 
-void GraphRenderer::render(const float animationSpeed)  {
+    for (auto &event : events) {
+        event->apply(*m_layout);
+    }
+
     drawNodes();
     drawEdges(animationSpeed);
 
+
+    for (auto & event : events) {
+        event->render(*this,*m_layout,time,animationSpeed);
+    }
 }
 void GraphRenderer::drawNodes() {
     for(const Node &node:m_layout->getNodes()) {
@@ -18,12 +33,12 @@ void GraphRenderer::drawEdges(float animationSpeed) {
 
     for (int from = 0; from < edges.size(); from++) {
         for (const auto &edge : edges[from]) {
-            if (shouldSkipEdge(edge)) continue;
+            if (shouldSkipEdge(edge) || edge->skipDraw) continue;
 
             const Node &nodeFrom = m_layout->getNodes()[from];
             const Node &nodeTo = m_layout->getNodes()[edge->destination];
 
-            const float progress = calculateAnimationProgress(edge, animationSpeed);
+            const float progress = 0.0f;
 
             glm::vec2 fromPos(nodeFrom.posX, nodeFrom.posY);
             glm::vec2 toPos(nodeTo.posX, nodeTo.posY);
@@ -54,13 +69,10 @@ void GraphRenderer::drawEdge(const glm::vec2 &from, const glm::vec2 &to,
     if (!edge->isBidirectional) {
         m_renderer.drawAnimatedEdge(glm::vec3(startPos, 1.0f), glm::vec3(endPos - 16.0f * dir, 1.0f), progress);
 
-        glm::vec3 arrowColor = edge->isActivated()
-                                  ? glm::vec3(1.0f, 0.3f, 0.3f)  // active red
-                                  : glm::vec3(0.3f, 0.3f, 1.0f); // inactive blue
+        glm::vec3 arrowColor = glm::vec3(0.3f, 0.3f, 1.0f); // inactive blue
 
         m_renderer.drawArrowhead(glm::vec3(startPos, 1.0f), glm::vec3(endPos, 1.0f), arrowColor);
     } else {
-
         m_renderer.drawAnimatedEdge(glm::vec3(startPos, 1.0f), glm::vec3(endPos, 1.0f), progress);
     }
 
@@ -95,15 +107,8 @@ void GraphRenderer::drawEdgeWeight(const glm::vec2 &edgeFrom,const glm::vec2 &ed
     glEnable(GL_DEPTH_TEST);
 }
 bool GraphRenderer::shouldSkipEdge(const std::shared_ptr<Edge> &edge)const {
-    return edge->twin && edge->twin->isActivated();
+    //return edge->twin && edge->twin->isActivated();
+    return false;
 }
 
-float GraphRenderer::calculateAnimationProgress(const std::shared_ptr<Edge> &edge, float animationSpeed) const{
-    if (!edge->isActivated()) return 0.0f;
 
-    auto now = std::chrono::high_resolution_clock::now();
-    float elapsed = std::chrono::duration<float>(now - edge->activation_time).count();
-
-    float progress = elapsed / animationSpeed;
-    return (progress > 1.0f) ? 1.0f : progress;
-}

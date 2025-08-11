@@ -1,6 +1,6 @@
-#include "GraphLayout.hpp"
+#include "layout/GraphLayout.hpp"
 #include <random>
-#include "Config.hpp"
+#include "../include/utils/Config.hpp"
 
 GraphLayout::GraphLayout(unsigned int nodeCount, Graph &g):m_graph(g){
     m_nodes.reserve(nodeCount);
@@ -38,8 +38,8 @@ void GraphLayout::nodesAtCircle(float circleRadius) {
     const unsigned int windowHeight = Config::getInstance().getWindowHeight();
 
     for(Node &node:m_nodes) {
-        float x = circleRadius*cosf(theta);
-        float y = circleRadius*sinf(theta);
+        float x = circleRadius*cosf(theta) + randJitter();
+        float y = circleRadius*sinf(theta) + randJitter();
 
         node.posX = x + windowWidth/2;
         node.posY = y + windowHeight/2;
@@ -59,7 +59,11 @@ int GraphLayout::getNodeIdxByCoordinates(float x, float y) const {
     }
     return -1;
 }
-
+float GraphLayout::randJitter(const float maxJitter) {
+    static std::mt19937 rng(std::random_device{}());
+    std::uniform_real_distribution<float> dist(-maxJitter, maxJitter);
+    return dist(rng);
+}
 void GraphLayout::setNodeColor(int nodeIndex,const glm::vec3 &newColor) {
     m_nodes[nodeIndex].color = newColor;
 }
@@ -74,12 +78,6 @@ void GraphLayout::addNewNode(float posX,float posY) {
 void GraphLayout::reset() {
     for(Node &node:m_nodes) {
         node.color = glm::vec3(0.0f,1.0f,0.0f);
-    }
-
-    for (auto list: m_graph.adjList ) {
-        for (auto edge : list) {
-            edge->activation_time = std::chrono::high_resolution_clock::time_point(std::chrono::high_resolution_clock::duration(-1));
-        }
     }
 
 }

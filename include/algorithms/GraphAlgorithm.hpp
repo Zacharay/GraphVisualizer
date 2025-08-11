@@ -1,8 +1,10 @@
 #pragma once
-#include <Graph.hpp>
-#include <GraphLayout.hpp>
+#include <core/Graph.hpp>
+#include <layout/GraphLayout.hpp>
 #include <memory>
 #include <optional>
+
+#include "core/AnimationController.hpp"
 
 
 struct TraversalStep {
@@ -18,6 +20,6 @@ public:
     GraphAlgorithm(Graph &g, std::shared_ptr<GraphLayout> l) : m_graph(g), m_layout(l) {}
 
     virtual void start(int startingNode)=0;
-    virtual std::optional<TraversalStep> step () = 0;
+    virtual std::vector<std::shared_ptr<VisualizationEvent>> step () = 0;
     virtual ~GraphAlgorithm() = default;  // Virtual destructor
 };

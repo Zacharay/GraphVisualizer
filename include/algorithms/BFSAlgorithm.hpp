@@ -1,6 +1,6 @@
 #pragma once
 #include "GraphAlgorithm.hpp"
-#include "GraphLayout.hpp"
+#include "layout/GraphLayout.hpp"
 #include <queue>
 
 
@@ -15,7 +15,7 @@ public:
     }
 
     void start(int startingNode)override;
-    std::optional<TraversalStep> step()override;
+    std::vector<std::shared_ptr<VisualizationEvent>> step()override;
 
 
 };

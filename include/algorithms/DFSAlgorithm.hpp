@@ -2,8 +2,8 @@
 #include <stack>
 #include <vector>
 #include "GraphAlgorithm.hpp"
-#include "Graph.hpp"
-#include "GraphLayout.hpp"
+#include "core/Graph.hpp"
+#include "layout/GraphLayout.hpp"
 
 class DFSAlgorithm : public GraphAlgorithm {
 private:
@@ -16,6 +16,6 @@ public:
    }
 
    void start(int startingNode)override;
-   std::optional<TraversalStep> step()override;
+   std::vector<std::shared_ptr<VisualizationEvent>> step()override;
 
 };

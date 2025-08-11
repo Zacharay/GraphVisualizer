@@ -1,6 +1,6 @@
-#include "TextRenderer.hpp"
+#include "render/TextRenderer.hpp"
 #include <iostream>
-#include <Config.hpp>
+#include <../include/utils/Config.hpp>
 
 struct Vertice {
 	float xPos;

@@ -1,4 +1,7 @@
-#include "BFSAlgorithm.hpp"
+#include "algorithms/BFSAlgorithm.hpp"
+
+#include "animations/VisitEdge.hpp"
+#include "animations/VisitNode.hpp"
 
 void BFSAlgorithm::start(int startingNode) {
 
@@ -9,16 +12,21 @@ void BFSAlgorithm::start(int startingNode) {
         m_queue.push(edge);
     }
 }
-std::optional<TraversalStep> BFSAlgorithm::step() {
-    if ( m_queue.empty()) return std::nullopt;
+std::vector<std::shared_ptr<VisualizationEvent>> BFSAlgorithm::step() {
+    std::vector<std::shared_ptr<VisualizationEvent>> events;
+
+    if ( m_queue.empty()) return events;
 
     std::shared_ptr<Edge> edge = m_queue.front();
     int parentNodeIndex = edge->destination;
 
     if (m_visited[parentNodeIndex]) {
         m_queue.pop();
-        return std::nullopt;
+        return events;
     }
+
+    events.push_back(std::make_shared<VisitEdge>(edge));
+    events.push_back(std::make_shared<VisitNode>(parentNodeIndex));
 
     m_visited[parentNodeIndex] = true;
     m_queue.pop();
@@ -28,9 +36,7 @@ std::optional<TraversalStep> BFSAlgorithm::step() {
             m_queue.push(e);
         }
     }
-    TraversalStep step;
-    step.visitedNode = parentNodeIndex;
-    step.visitedEdge = edge;
-    return step;
+
+    return events;
 }
 

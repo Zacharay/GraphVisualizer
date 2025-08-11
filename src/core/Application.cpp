@@ -1,14 +1,12 @@
-#include  "Application.hpp"
-#include "Shader.hpp"
+#include  "core/Application.hpp"
 #include <memory>
 
-#include "GUI.hpp"
-
-#include "BFSAlgorithm.hpp"
-#include "TextRenderer.hpp"
+#include "layout/GUI.hpp"
+#include "core/GraphController.hpp"
+#include "algorithms/BFSAlgorithm.hpp"
+#include "render/GraphRenderer.hpp"
 #include "input/MouseModeFactory.hpp"
 
-float startTime = glfwGetTime();
 Application::Application() : Window(),m_graph(0){
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
@@ -25,7 +23,7 @@ Application::Application() : Window(),m_graph(0){
     m_currentMouseModeType = m_gui.getCurrentMouseMode();
     m_activeMouseMode = MouseModeFactory::create(m_currentMouseModeType,m_graph,*m_graphLayout);
 
-
+    lastFrame = glfwGetTime();
 }
 std::unique_ptr<GraphAlgorithm> Application::getSelectedAlgorithm() {
     switch (m_gui.getSelectedAlgorithm()) {
@@ -48,14 +46,18 @@ void Application::processInput(float deltaTime) {
 
 void Application::onRender() {
     m_gui.renderGUI(m_graph.getSize()-1);
-    m_graphRenderer->render(m_gui.getSettings().visualizationSpeed);
+    auto activeEvents = m_graphController->getAnimationController().getActiveEvents();
+    m_graphRenderer->render(activeEvents,m_gui.getSettings().visualizationSpeed,m_graphController->getAnimationController().getTime());
 
 }
 void Application::onUpdate() {
     float currentFrame = glfwGetTime();
-    float deltaTime = currentFrame ;
+    float deltaTime = currentFrame-lastFrame ;
+    lastFrame = currentFrame;
 
     processInput(deltaTime);
+
+
 
     MouseModeType selectedMouseMode = m_gui.getCurrentMouseMode();
 
@@ -64,7 +66,7 @@ void Application::onUpdate() {
         m_activeMouseMode = MouseModeFactory::create(m_currentMouseModeType,m_graph,*m_graphLayout);
     }
 
-    updateVisualization();
+    updateVisualization(deltaTime);
 
 }
 void Application::onMouseButton(int button, int action, int mods) {
@@ -78,23 +80,12 @@ void Application::onMouseButton(int button, int action, int mods) {
         else if (action== GLFW_RELEASE) {
             m_activeMouseMode->onMouseUp(button,xpos,ypos);
         }
-        // else if(m_mouseMode == MouseMode::MOVE) {
-        //     if(action==GLFW_PRESS) {
-        //         m_selectedNode = m_graphLayout->getNodeIdxByCoordinates(xpos,ypos);
-        //         m_isDragging = true;
-        //     }
-        //     else if(action == GLFW_RELEASE) {
-        //         m_selectedNode = -1;
-        //         m_isDragging = false;
-        //     }
-        // }
-
 
 }
 void Application::onCursorPosition(float x, float y) {
     m_activeMouseMode->onMouseMove(x,y);
 }
-void Application::updateVisualization() {
+void Application::updateVisualization(float deltaTime) {
     VisualizationSettings settings = m_gui.getSettings();
 
     const float animationSpeed = settings.visualizationSpeed;
@@ -105,18 +96,19 @@ void Application::updateVisualization() {
     }
 
     if (settings.state == AlgorithmState::STEP) {
-        m_graphController->update(animationSpeed);
+        m_graphController->update(deltaTime,animationSpeed,true);
         m_gui.setIdleAlgorithmState();
     }
     else if (settings.state == AlgorithmState::IDLE) {
         m_gui.setIdleAlgorithmState();
     }
     else if (settings.state == AlgorithmState::RUNNING) {
-        m_graphController->update(animationSpeed);
+        m_graphController->update(deltaTime,animationSpeed);
     }
     else if (settings.state == AlgorithmState::RESET) {
         m_graphLayout->reset();
         m_graphController->resetAlgorithm(getSelectedAlgorithm());
+        m_graphController->getAnimationController().resetEvents();
         m_gui.setIdleAlgorithmState();
     }
 }

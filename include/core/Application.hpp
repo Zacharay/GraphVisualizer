@@ -1,14 +1,13 @@
-#include <DFSAlgorithm.hpp>
+#include <algorithms/DFSAlgorithm.hpp>
 #include <memory>
-#include "Window.hpp"
-#include "Renderer.hpp"
-#include "Graph.hpp"
-#include "GraphParser.hpp"
-#include "GraphRenderer.hpp"
+#include "core/Window.hpp"
+#include "render/Renderer.hpp"
+#include "core/Graph.hpp"
+#include "utils/GraphParser.hpp"
+#include "render/GraphRenderer.hpp"
 #include "GraphController.hpp"
-#include "GUI.hpp"
+#include "layout/GUI.hpp"
 #include <memory>
-#include "TextRenderer.hpp"
 #include "input/IMouseMode.hpp"
 
 
@@ -26,10 +25,12 @@ class Application : public Window{
     std::unique_ptr<IMouseMode> m_activeMouseMode;
     MouseModeType m_currentMouseModeType;
 
+    float lastFrame = 0.0f;
+
     GUI m_gui;
 
     void processInput(float deltaTime);
-    void updateVisualization();
+    void updateVisualization(float deltaTime);
     std::unique_ptr<GraphAlgorithm> getSelectedAlgorithm();
 public:
     Application();

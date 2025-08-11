@@ -1,6 +1,6 @@
 #include <iostream>
-#include "Application.hpp"
-#include "Config.hpp"
+#include "core/Application.hpp"
+#include "../include/utils/Config.hpp"
 
 int main() {
     Config::getInstance().load("config.json");

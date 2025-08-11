@@ -1,8 +1,8 @@
 #pragma once
-#include <GraphLayout.hpp>
+#include <layout/GraphLayout.hpp>
 
 #include "IMouseMode.hpp"
-#include "../Graph.hpp"
+#include "core/Graph.hpp"
 
 class MoveNodesMode : public IMouseMode {
 private:
