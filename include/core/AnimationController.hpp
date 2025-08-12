@@ -18,7 +18,10 @@ public:
     std::vector<std::shared_ptr<VisualizationEvent>> getActiveEvents()  {
         std::vector<std::shared_ptr<VisualizationEvent>> active;
         for (auto& e : m_events) {
-            if (m_time >= e->startTime) active.push_back(e);
+            if (m_time >= e->startTime) {
+
+                active.push_back(e);
+            }
         }
         return active;
     }

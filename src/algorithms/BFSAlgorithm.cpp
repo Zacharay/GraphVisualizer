@@ -4,7 +4,7 @@
 #include "animations/VisitNode.hpp"
 
 void BFSAlgorithm::start(int startingNode) {
-
+    m_isRunning = true;
     m_visited[startingNode] = true;
     m_layout->setNodeColor(startingNode,glm::vec3(1.0f,1.0f,0));
 
@@ -15,25 +15,28 @@ void BFSAlgorithm::start(int startingNode) {
 std::vector<std::shared_ptr<VisualizationEvent>> BFSAlgorithm::step() {
     std::vector<std::shared_ptr<VisualizationEvent>> events;
 
-    if ( m_queue.empty()) return events;
+    if (m_queue.empty()) {
+        m_isRunning = false;
+        return events;
+    }
 
-    std::shared_ptr<Edge> edge = m_queue.front();
-    int parentNodeIndex = edge->destination;
+    auto edge = m_queue.front();
+    m_queue.pop();
 
-    if (m_visited[parentNodeIndex]) {
-        m_queue.pop();
+    int nextNode = edge->destination;
+
+    if (m_visited[nextNode]) {
         return events;
     }
 
     events.push_back(std::make_shared<VisitEdge>(edge));
-    events.push_back(std::make_shared<VisitNode>(parentNodeIndex));
+    events.push_back(std::make_shared<VisitNode>(nextNode));
+    m_visited[nextNode] = true;
 
-    m_visited[parentNodeIndex] = true;
-    m_queue.pop();
-
-    for (auto& e : m_graph.adjList[parentNodeIndex]) {
+    for (auto& e : m_graph.adjList[nextNode]) {
         if (!m_visited[e->destination]) {
             m_queue.push(e);
+
         }
     }
 

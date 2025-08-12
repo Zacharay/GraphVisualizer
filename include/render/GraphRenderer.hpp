@@ -15,10 +15,8 @@ private:
 
     void drawNodes();
     void drawEdges(float animationSpeed);
-
     void drawEdgeWeight(const glm::vec2 &edgeFrom,const glm::vec2 &edgeTo,const std::string &weight);
 
-    bool shouldSkipEdge(const std::shared_ptr<Edge> &edge) const;
 
 public:
     GraphRenderer(std::shared_ptr<GraphLayout> g,Renderer &r):m_layout(g),m_renderer(r) {};

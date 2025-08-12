@@ -16,10 +16,13 @@ class GraphAlgorithm {
 protected:
     Graph& m_graph;
     std::shared_ptr<GraphLayout> m_layout;
+    bool m_isRunning = false;
 public:
     GraphAlgorithm(Graph &g, std::shared_ptr<GraphLayout> l) : m_graph(g), m_layout(l) {}
 
     virtual void start(int startingNode)=0;
     virtual std::vector<std::shared_ptr<VisualizationEvent>> step () = 0;
     virtual ~GraphAlgorithm() = default;  // Virtual destructor
+
+    bool isRunning() const { return m_isRunning; }
 };

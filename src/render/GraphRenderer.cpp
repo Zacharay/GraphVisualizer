@@ -33,7 +33,11 @@ void GraphRenderer::drawEdges(float animationSpeed) {
 
     for (int from = 0; from < edges.size(); from++) {
         for (const auto &edge : edges[from]) {
-            if (shouldSkipEdge(edge) || edge->skipDraw) continue;
+            if (edge->skipDraw) continue;
+
+            if (edge->twin) {
+                edge->twin->skipDraw=true;
+            }
 
             const Node &nodeFrom = m_layout->getNodes()[from];
             const Node &nodeTo = m_layout->getNodes()[edge->destination];
@@ -42,6 +46,7 @@ void GraphRenderer::drawEdges(float animationSpeed) {
 
             glm::vec2 fromPos(nodeFrom.posX, nodeFrom.posY);
             glm::vec2 toPos(nodeTo.posX, nodeTo.posY);
+
 
 
             drawEdge(fromPos,toPos,edge, progress);
@@ -106,9 +111,6 @@ void GraphRenderer::drawEdgeWeight(const glm::vec2 &edgeFrom,const glm::vec2 &ed
     }
     glEnable(GL_DEPTH_TEST);
 }
-bool GraphRenderer::shouldSkipEdge(const std::shared_ptr<Edge> &edge)const {
-    //return edge->twin && edge->twin->isActivated();
-    return false;
-}
+
 
 

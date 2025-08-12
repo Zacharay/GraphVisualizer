@@ -33,7 +33,7 @@ public:
     }
 
     void update(float deltaTime,float visualizationSpeed,bool forceStep = false) {
-        if (!algorithm || !m_isRunning) return;
+        if (!algorithm || !algorithm->isRunning()) return;
 
         // For simplicity: call step every visualizationSpeed seconds
         static float timeAccumulator = visualizationSpeed;
@@ -51,7 +51,8 @@ public:
             timeAccumulator = 0.0f;
 
             if (newEvents.empty()) {
-                m_isRunning = false; // Finished BFS
+                timeAccumulator = visualizationSpeed;
+                update(deltaTime,visualizationSpeed,true);
             }
             return;
         }
@@ -65,15 +66,18 @@ public:
             timeAccumulator = 0.0f;
 
             if (newEvents.empty()) {
-                m_isRunning = false; // Finished BFS
+                timeAccumulator = visualizationSpeed;
             }
+
         }
 
         m_animationController.update(deltaTime);
     }
 
     bool isRunning() const {
-        return m_isRunning;
+        if (!algorithm)return false;
+
+        return algorithm->isRunning();
     }
     AnimationController& getAnimationController() { return m_animationController; }
 };

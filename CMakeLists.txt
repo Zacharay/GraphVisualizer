@@ -59,6 +59,8 @@ add_executable(GraphVisualizer ${SOURCES}
         src/animations/VisualizationEvent.cpp
         include/animations/VisitNode.hpp
         include/animations/VisitEdge.hpp
+        include/algorithms/DijkstraAlgorithm.hpp
+        src/algorithms/DijkstraAlgorithm.cpp
 )
 
 # Include directories

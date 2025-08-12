@@ -12,6 +12,7 @@ private:
 public:
     BFSAlgorithm(Graph& g, std::shared_ptr<GraphLayout> l) : GraphAlgorithm(g, l) {
         m_visited.resize(g.getSize());
+        m_visited.assign(g.getSize(), false);
     }
 
     void start(int startingNode)override;

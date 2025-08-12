@@ -5,7 +5,7 @@
 #include "GLFW/glfw3.h"
 
 void DFSAlgorithm::start(int startingNode) {
-    
+    m_isRunning = true;
     m_visited[startingNode] = true;
     m_layout->setNodeColor(startingNode,glm::vec3(1.0f,1.0f,0));
 
@@ -16,26 +16,28 @@ void DFSAlgorithm::start(int startingNode) {
 std::vector<std::shared_ptr<VisualizationEvent>> DFSAlgorithm::step() {
 
     std::vector<std::shared_ptr<VisualizationEvent>> events;
-    if ( m_dfsStack.empty()) return events;
+    if ( m_dfsStack.empty()) {
+        m_isRunning = false;
+        return events;
+    }
 
     std::shared_ptr<Edge> edge = m_dfsStack.top();
-    int parentNodeIndex = edge->destination;
+    int nextNodeIndex = edge->destination;
+    m_dfsStack.pop();
 
-
-    if (m_visited[parentNodeIndex]) {
+    if (m_visited[nextNodeIndex]) {
         m_dfsStack.pop();
         return events;
     }
+
     events.push_back(std::make_shared<VisitEdge>(edge));
-    events.push_back(std::make_shared<VisitNode>(parentNodeIndex));
+    events.push_back(std::make_shared<VisitNode>(nextNodeIndex));
+    m_visited[nextNodeIndex] = true;
 
-    m_visited[parentNodeIndex] = true;
-    m_dfsStack.pop();
 
-    for (auto& e : m_graph.adjList[parentNodeIndex]) {
+    for (auto& e : m_graph.adjList[nextNodeIndex]) {
         if (!m_visited[e->destination]) {
             m_dfsStack.push(e);
-
         }
     }
     return events;

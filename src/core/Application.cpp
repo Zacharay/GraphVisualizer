@@ -11,6 +11,7 @@ Application::Application() : Window(),m_graph(0){
     glfwSetInputMode(m_window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
     m_graphParser.loadGraph(m_graph);
+    m_graph.printGraph();
 
     m_graphLayout= std::make_shared<GraphLayout>(m_graph.getSize(),m_graph);
     m_graphLayout->nodesAtCircle(400.0f);
@@ -93,6 +94,7 @@ void Application::updateVisualization(float deltaTime) {
     if (!m_graphController->isRunning() && (settings.state == AlgorithmState::STEP ||  settings.state == AlgorithmState::RUNNING)) {
         m_graphController->setAlgorithm(getSelectedAlgorithm());
         m_graphController->start(m_gui.getStartingNode());
+        std::cout<<"xd";
     }
 
     if (settings.state == AlgorithmState::STEP) {
