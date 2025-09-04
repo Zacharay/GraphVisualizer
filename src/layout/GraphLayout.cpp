@@ -67,6 +67,10 @@ float GraphLayout::randJitter(const float maxJitter) {
 void GraphLayout::setNodeColor(int nodeIndex,const glm::vec3 &newColor) {
     m_nodes[nodeIndex].color = newColor;
 }
+void GraphLayout::setNodeLabel(unsigned int nodeIndex, std::string label) {
+    m_nodes[nodeIndex].label = label;
+}
+
 void GraphLayout::setNodePosition(unsigned int nodeIndex, float x, float y) {
     m_nodes[nodeIndex].posX = x;
     m_nodes[nodeIndex].posY = y;

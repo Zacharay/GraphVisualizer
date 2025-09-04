@@ -4,6 +4,7 @@
 #include "layout/GUI.hpp"
 #include "core/GraphController.hpp"
 #include "algorithms/BFSAlgorithm.hpp"
+#include "algorithms/DijkstraAlgorithm.hpp"
 #include "render/GraphRenderer.hpp"
 #include "input/MouseModeFactory.hpp"
 
@@ -34,6 +35,8 @@ std::unique_ptr<GraphAlgorithm> Application::getSelectedAlgorithm() {
         case AlgorithmGUI::BFS:
             return std::make_unique<BFSAlgorithm>(m_graph,m_graphLayout);
         break;
+        case AlgorithmGUI::DIJKSTRA:
+            return std::make_unique<DijkstraAlgorithm>(m_graph,m_graphLayout,0,6);
         default:
             break;
     }
@@ -94,7 +97,6 @@ void Application::updateVisualization(float deltaTime) {
     if (!m_graphController->isRunning() && (settings.state == AlgorithmState::STEP ||  settings.state == AlgorithmState::RUNNING)) {
         m_graphController->setAlgorithm(getSelectedAlgorithm());
         m_graphController->start(m_gui.getStartingNode());
-        std::cout<<"xd";
     }
 
     if (settings.state == AlgorithmState::STEP) {

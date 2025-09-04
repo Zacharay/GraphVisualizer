@@ -26,6 +26,14 @@ void GraphRenderer::render(std::vector<std::shared_ptr<VisualizationEvent>>& eve
 void GraphRenderer::drawNodes() {
     for(const Node &node:m_layout->getNodes()) {
         m_renderer.drawNode(node.posX,node.posY,node.color);
+        if (!node.label.empty()) {
+            glm::vec2 pos(node.posX, node.posY);
+            glDisable(GL_DEPTH_TEST);
+            glEnable(GL_BLEND);
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            m_textRenderer.DrawText(node.label, pos.x,Config::getInstance().getWindowHeight() - pos.y);
+            glEnable(GL_DEPTH_TEST);
+        }
     }
 }
 void GraphRenderer::drawEdges(float animationSpeed) {
@@ -85,6 +93,9 @@ void GraphRenderer::drawEdge(const glm::vec2 &from, const glm::vec2 &to,
         std::string edgeWeight = std::to_string(edge->weight);
         drawEdgeWeight(from,to,edgeWeight);
     }
+}
+void GraphRenderer::drawNodeText(std::string &text,glm::vec2 nodePosition,float radius,glm::vec3 textColor) {
+    m_textRenderer.DrawText(text,nodePosition.x,nodePosition.y);
 }
 
 void GraphRenderer::drawEdgeWeight(const glm::vec2 &edgeFrom,const glm::vec2 &edgeTo,const std::string &weight) {

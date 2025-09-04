@@ -23,7 +23,7 @@ void GUI::renderGUI(int maxNode) {
         }
         ImGui::Separator();
 
-        const char* algorithm_items[] = { "DFS", "BFS"};
+        const char* algorithm_items[] = { "DFS", "BFS","DIJKSTRA"};
         ImGui::Combo("Algorithm", &m_selectedAlgorithm, algorithm_items, IM_ARRAYSIZE(algorithm_items));
 
         ImGui::SliderInt("Start Node", &m_startingNode, 0, maxNode);

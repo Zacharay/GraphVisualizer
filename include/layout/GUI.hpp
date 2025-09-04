@@ -16,7 +16,8 @@ enum AlgorithmState {
 
 enum AlgorithmGUI {
     DFS,
-    BFS
+    BFS,
+    DIJKSTRA
 };
 
 struct VisualizationSettings {
